@@ -1,0 +1,356 @@
+// Schéma de données de la plateforme de campagne.
+// Les champs de contenu multilingues sont stockés en JSON : { "fr": "...", "ht": "...", "en": "..." }.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────── Authentification & sécurité
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  FINANCE
+}
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String
+  passwordHash   String
+  role           Role      @default(EDITOR)
+  active         Boolean   @default(true)
+  failedLogins   Int       @default(0)
+  lockedUntil    DateTime?
+  lastLoginAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  sessions       Session[]
+  auditLogs      AuditLog[]
+  articles       Article[]
+}
+
+model Session {
+  id         String   @id // SHA-256 du jeton (le jeton brut n'est jamais stocké)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
+
+model RateLimit {
+  key         String   @id
+  count       Int
+  windowStart DateTime
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String?
+  entityId  String?
+  details   Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entity, entityId])
+}
+
+// ───────────────────────────── Paramètres administrables (clé / valeur JSON)
+
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+// ───────────────────────────── Programme
+
+model ProgramTheme {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  icon      String   @default("landmark")
+  order     Int      @default(0)
+  title     Json
+  summary   Json
+  body      Json     // Markdown par langue
+  measures  Json     // { fr: string[], ht: string[], en: string[] }
+  image     String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ───────────────────────────── Actualités
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model ArticleCategory {
+  id       String    @id @default(cuid())
+  slug     String    @unique
+  name     Json
+  order    Int       @default(0)
+  articles Article[]
+}
+
+model Article {
+  id          String           @id @default(cuid())
+  slug        String           @unique
+  title       Json
+  excerpt     Json
+  body        Json             // Markdown par langue
+  coverImage  String?
+  coverAlt    String?
+  videoUrl    String?
+  status      ArticleStatus    @default(DRAFT)
+  publishedAt DateTime?        // date future = publication programmée
+  featured    Boolean          @default(false)
+  categoryId  String?
+  category    ArticleCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  authorId    String?
+  author      User?            @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  seoTitle    String?
+  seoDescription String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+// ───────────────────────────── Agenda
+
+enum EventType {
+  MEETING
+  CONFERENCE
+  TRAVEL
+  RALLY
+  OTHER
+}
+
+model Event {
+  id                  String              @id @default(cuid())
+  slug                String              @unique
+  type                EventType           @default(MEETING)
+  title               Json
+  description         Json
+  startsAt            DateTime
+  endsAt              DateTime?
+  venue               String
+  city                String
+  address             String?
+  image               String?
+  registrationEnabled Boolean             @default(false)
+  capacity            Int?
+  published           Boolean             @default(true)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  registrations       EventRegistration[]
+
+  @@index([startsAt])
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  firstName String
+  lastName  String
+  email     String
+  phone     String?
+  guests    Int      @default(0)
+  consentAt DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, email])
+}
+
+// ───────────────────────────── Galerie & médias
+
+enum MediaType {
+  PHOTO
+  VIDEO
+}
+
+enum MediaCategory {
+  MEETING
+  VISIT
+  INTERVIEW
+  CONFERENCE
+  OTHER
+}
+
+model MediaItem {
+  id        String        @id @default(cuid())
+  type      MediaType     @default(PHOTO)
+  category  MediaCategory @default(OTHER)
+  title     Json
+  imageUrl  String?       // photo ou miniature de vidéo
+  videoUrl  String?       // URL YouTube / Vimeo
+  takenAt   DateTime?
+  order     Int           @default(0)
+  published Boolean       @default(true)
+  createdAt DateTime      @default(now())
+}
+
+model Upload {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  mimeType  String
+  size      Int
+  alt       String?
+  createdAt DateTime @default(now())
+}
+
+// ───────────────────────────── Participation citoyenne
+
+enum InboxStatus {
+  NEW
+  IN_PROGRESS
+  DONE
+  ARCHIVED
+}
+
+model ContactMessage {
+  id        String      @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  consentAt DateTime
+  status    InboxStatus @default(NEW)
+  createdAt DateTime    @default(now())
+}
+
+model Volunteer {
+  id           String      @id @default(cuid())
+  firstName    String
+  lastName     String
+  email        String
+  phone        String?
+  city         String
+  interests    String[]
+  availability String?
+  message      String?
+  consentAt    DateTime
+  status       InboxStatus @default(NEW)
+  createdAt    DateTime    @default(now())
+}
+
+enum SubscriberStatus {
+  PENDING
+  CONFIRMED
+  UNSUBSCRIBED
+}
+
+model NewsletterSubscriber {
+  id           String           @id @default(cuid())
+  email        String           @unique
+  locale       String           @default("fr")
+  status       SubscriberStatus @default(PENDING)
+  token        String           @unique
+  consentAt    DateTime
+  confirmedAt  DateTime?
+  createdAt    DateTime         @default(now())
+}
+
+model VisitorDay {
+  day         DateTime @db.Date
+  visitorHash String
+  views       Int      @default(1)
+
+  @@id([day, visitorHash])
+}
+
+// ───────────────────────────── Dons
+
+enum PaymentMethod {
+  CARD
+  MONCASH
+  BANK_TRANSFER
+}
+
+enum DonationStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+model Donation {
+  id              String         @id @default(cuid())
+  reference       String         @unique
+  accessToken     String         @unique // jeton secret pour la page de confirmation / reçu du donateur
+  firstName       String
+  lastName        String
+  email           String
+  phone           String?
+  country         String         // code ISO 3166-1 alpha-2
+  amountCents     Int
+  currency        String         @default("HTG")
+  method          PaymentMethod
+  provider        String
+  providerRef     String?        // id session Stripe / transaction MonCash / réf. virement
+  providerPaymentId String?      // id du paiement confirmé (PaymentIntent Stripe, transaction MonCash)
+  status          DonationStatus @default(PENDING)
+  attestations    Json           // déclarations du donateur (nationalité, fonds propres…)
+  termsVersion    String
+  termsAcceptedAt DateTime
+  locale          String         @default("fr")
+  receiptNumber   String?        @unique
+  receiptSentAt   DateTime?
+  confirmedAt     DateTime?
+  failureReason   String?
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  paymentEvents   PaymentEvent[]
+
+  @@index([status, createdAt])
+  @@index([email])
+  @@index([providerRef])
+  @@index([providerPaymentId])
+}
+
+model PaymentEvent {
+  id         String    @id @default(cuid())
+  provider   String
+  eventId    String    // identifiant fourni par le prestataire (idempotence)
+  type       String
+  donationId String?
+  donation   Donation? @relation(fields: [donationId], references: [id], onDelete: SetNull)
+  payload    Json
+  createdAt  DateTime  @default(now())
+
+  @@unique([provider, eventId])
+}
+
+model FinancialReport {
+  id          String   @id @default(cuid())
+  title       Json
+  period      String
+  description Json?
+  fileUrl     String
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+}

@@ -1,0 +1,53 @@
+import { FileText } from "lucide-react";
+import { prisma } from "@/lib/db";
+import { getDictionary } from "@/lib/i18n";
+import { getSetting } from "@/lib/settings";
+import { formatDate } from "@/lib/utils";
+
+export async function UsageCategories() {
+  const { t, l } = await getDictionary();
+  const cfg = await getSetting("donations");
+  return (
+    <div>
+      <h2 className="h2">{t.donate.usageTitle}</h2>
+      <p className="lead mt-4 max-w-2xl">{t.donate.usageIntro}</p>
+      <ul className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2">
+        {cfg.usageCategories.map((c, i) => (
+          <li key={i} className="bg-white p-7">
+            <span className="font-serif text-sm font-semibold text-gold-600">{String(i + 1).padStart(2, "0")}</span>
+            <h3 className="mt-3 text-xl font-semibold">{l(c.title)}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{l(c.text)}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export async function FinancialReports() {
+  const { t, l, locale } = await getDictionary();
+  const reports = await prisma.financialReport.findMany({ where: { published: true }, orderBy: { publishedAt: "desc" } });
+  return (
+    <div>
+      <h2 className="h2">{t.donate.reportsTitle}</h2>
+      {reports.length === 0 ? (
+        <p className="mt-6 text-muted">{t.donate.noReports}</p>
+      ) : (
+        <ul className="mt-8 divide-y divide-line border-y border-line">
+          {reports.map((r) => (
+            <li key={r.id} className="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex gap-4">
+                <FileText className="mt-0.5 h-5 w-5 shrink-0 text-crimson-600" aria-hidden />
+                <div>
+                  <p className="font-medium text-navy-900">{l(r.title)}</p>
+                  <p className="text-sm text-muted">{r.period}{r.publishedAt ? ` · ${formatDate(r.publishedAt, locale)}` : ""}</p>
+                </div>
+              </div>
+              <a href={r.fileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">{t.common.download}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

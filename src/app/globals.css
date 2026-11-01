@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/* ── Charte graphique — modifiable ici (palette personnalisable) ───────────── */
+@theme {
+  --color-navy-950: #050f1f;
+  --color-navy-900: #0b1f3a;
+  --color-navy-800: #12294a;
+  --color-navy-700: #1c3a63;
+  --color-navy-600: #2b4d7d;
+  --color-navy-100: #e3e9f2;
+  --color-navy-50: #f1f4f9;
+  --color-crimson-700: #a50d26;
+  --color-crimson-600: #c8102e;
+  --color-crimson-500: #d92a45;
+  --color-crimson-50: #fcecee;
+  --color-gold-600: #a07f3c;
+  --color-gold-500: #b8944a;
+  --color-gold-300: #dcc79a;
+  --color-gold-100: #f4ecdb;
+  --color-ivory: #f7f5f0;
+  --color-ink: #1a2433;
+  --color-muted: #5b6676;
+  --color-line: #e4e1d9;
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4 Variable", Georgia, "Times New Roman", serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-ink;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif text-navy-900;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { @apply bg-gold-300 text-navy-900; }
+  :focus-visible { outline: 2px solid var(--color-gold-500); outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  .container-site { @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10; }
+  .kicker {
+    @apply inline-flex items-center gap-3 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-crimson-600;
+  }
+  .kicker::before { content: ""; @apply block h-px w-8 bg-gold-500; }
+  .kicker-light { @apply text-gold-300; }
+  .display { @apply font-serif text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl; }
+  .h2 { @apply font-serif text-3xl leading-tight font-semibold sm:text-4xl; }
+  .lead { @apply text-lg leading-relaxed text-muted; }
+
+  /* Boutons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-[3px] px-6 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 ease-out-soft disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary { @apply bg-navy-900 text-white hover:bg-navy-700; }
+  .btn-light { @apply bg-white text-navy-900 hover:bg-ivory; }
+  .btn-outline { @apply border border-navy-900/20 text-navy-900 hover:border-navy-900 hover:bg-navy-900 hover:text-white; }
+  .btn-outline-light { @apply border border-white/40 text-white hover:border-white hover:bg-white hover:text-navy-900; }
+  /* Bouton de don : se distingue (rouge + liseré or), reste dans la charte */
+  .btn-donate {
+    @apply relative bg-crimson-600 text-white uppercase tracking-[0.12em] shadow-[inset_0_-2px_0_var(--color-gold-500)] hover:bg-crimson-700;
+  }
+  .btn-sm { @apply px-4 py-2.5 text-[0.8rem]; }
+
+  /* Formulaires */
+  .label { @apply mb-1.5 block text-sm font-medium text-navy-900; }
+  .input {
+    @apply block w-full rounded-[3px] border border-line bg-white px-3.5 py-3 text-[0.95rem] text-ink placeholder:text-muted/60 transition-colors focus:border-navy-700 focus:outline-none focus:ring-2 focus:ring-navy-700/10 aria-[invalid=true]:border-crimson-600;
+  }
+  .field-error { @apply mt-1.5 text-sm text-crimson-600; }
+  .checkbox { @apply mt-0.5 h-4 w-4 shrink-0 rounded-sm border-line accent-navy-900; }
+
+  .card-line { @apply border-t border-line pt-6; }
+  .link-underline {
+    @apply bg-[length:0%_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 ease-out-soft hover:bg-[length:100%_1px];
+    background-image: linear-gradient(currentColor, currentColor);
+  }
+
+  /* Contenu Markdown */
+  .prose-campaign { @apply max-w-none text-[1.05rem] leading-[1.8] text-ink; }
+  .prose-campaign > * + * { @apply mt-5; }
+  .prose-campaign h2 { @apply mt-10 text-2xl font-semibold; }
+  .prose-campaign h3 { @apply mt-8 text-xl font-semibold; }
+  .prose-campaign a { @apply text-navy-700 underline decoration-gold-500 underline-offset-4; }
+  .prose-campaign ul { @apply list-disc space-y-2 pl-6 marker:text-gold-500; }
+  .prose-campaign ol { @apply list-decimal space-y-2 pl-6 marker:text-gold-600; }
+  .prose-campaign blockquote { @apply border-l-2 border-gold-500 pl-6 font-serif text-xl text-navy-900 italic; }
+  .prose-campaign strong { @apply font-semibold text-navy-900; }
+
+  .placeholder-tag {
+    @apply inline-flex items-center gap-1.5 rounded-sm bg-gold-100 px-2 py-1 text-[0.7rem] font-medium tracking-wide text-gold-600;
+  }
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.animate-rise { animation: rise 0.9s var(--ease-out-soft) both; }
+.delay-1 { animation-delay: 0.08s; }
+.delay-2 { animation-delay: 0.16s; }
+.delay-3 { animation-delay: 0.24s; }
+.delay-4 { animation-delay: 0.32s; }
