@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createHash, randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
 import type { User } from "@prisma/client";
-import { prisma } from "./db";
+import { hasDatabase, prisma } from "./db";
 import { can, type Permission } from "./permissions";
 import { env } from "./env";
 
@@ -59,7 +59,7 @@ export async function destroySession() {
 /** Utilisateur courant (mis en cache pour la durée de la requête). */
 export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  if (!token) return null;
+  if (!token || !hasDatabase()) return null;
   const session = await prisma.session.findUnique({
     where: { id: hashToken(token) },
     include: { user: { select: { id: true, email: true, name: true, role: true, active: true } } },

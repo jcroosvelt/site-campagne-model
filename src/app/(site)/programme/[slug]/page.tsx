@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check, FileDown } from "lucide-react";
-import { prisma } from "@/lib/db";
 import { getDictionary, localizeList } from "@/lib/i18n";
-import { publishedThemes } from "@/lib/queries";
+import { getTheme, publishedThemes } from "@/lib/queries";
 import { Markdown } from "@/components/ui/Markdown";
 import { Photo } from "@/components/ui/Photo";
 import { ThemeIcon } from "@/components/ui/icons";
@@ -12,9 +11,7 @@ import { getProgramPdfUrl } from "@/lib/program";
 
 type Props = { params: Promise<{ slug: string }> };
 
-async function load(slug: string) {
-  return prisma.programTheme.findFirst({ where: { slug, published: true } });
-}
+const load = getTheme;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { l } = await getDictionary();

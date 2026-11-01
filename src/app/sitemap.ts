@@ -1,16 +1,15 @@
 import type { MetadataRoute } from "next";
-import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
-import { publishedArticleWhere } from "@/lib/queries";
+import { listArticles, publishedThemes, upcomingEvents } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = env.appUrl();
   const [articles, events, themes] = await Promise.all([
-    prisma.article.findMany({ where: publishedArticleWhere(), select: { slug: true, updatedAt: true } }),
-    prisma.event.findMany({ where: { published: true }, select: { slug: true, updatedAt: true } }),
-    prisma.programTheme.findMany({ where: { published: true }, select: { slug: true, updatedAt: true } }),
+    listArticles({ take: 5000 }).then((r) => r.items),
+    upcomingEvents(5000),
+    publishedThemes(),
   ]);
   const statics = ["", "/le-candidat", "/notre-vision", "/programme", "/actualites", "/agenda", "/galerie", "/contact", "/rejoindre", "/faire-un-don", "/transparence"];
   return [

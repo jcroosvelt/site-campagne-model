@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarPlus, Clock, MapPin } from "lucide-react";
-import { prisma } from "@/lib/db";
+import { getEvent, seatsTaken } from "@/lib/queries";
 import { getDictionary } from "@/lib/i18n";
 import { formatDate, formatTime } from "@/lib/utils";
 import { env } from "@/lib/env";
@@ -13,7 +13,7 @@ import { ShareButtons } from "@/components/site/ShareButtons";
 import { EventRegistrationForm } from "@/components/forms/EventRegistrationForm";
 
 type Props = { params: Promise<{ slug: string }> };
-const load = (slug: string) => prisma.event.findFirst({ where: { slug, published: true } });
+const load = getEvent;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { l } = await getDictionary();
@@ -28,8 +28,7 @@ export default async function EventPage({ params }: Props) {
   const isPast = (e.endsAt ?? e.startsAt) < new Date();
   let full = false;
   if (e.capacity) {
-    const agg = await prisma.eventRegistration.aggregate({ where: { eventId: e.id }, _count: true, _sum: { guests: true } });
-    full = agg._count + (agg._sum.guests ?? 0) >= e.capacity;
+    full = (await seatsTaken(e.id)) >= e.capacity;
   }
   const title = l(e.title);
   const jsonLd = {

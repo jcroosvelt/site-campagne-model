@@ -1,4 +1,5 @@
 import "server-only";
+import { createHash } from "node:crypto";
 
 /** Accès centralisé aux variables d'environnement (côté serveur uniquement). */
 function read(name: string): string {
@@ -7,12 +8,17 @@ function read(name: string): string {
 
 export const env = {
   appUrl: () => read("APP_URL").replace(/\/$/, "") || "http://localhost:3000",
+  /**
+   * Secret serveur (anti-spam, empreintes de visite). Recommandé : APP_SECRET (≥ 32 caractères).
+   * À défaut, on dérive une valeur stable de DATABASE_URL (secrète et identique sur toutes les
+   * instances) pour que le site fonctionne dès le premier déploiement.
+   */
   appSecret: () => {
     const s = read("APP_SECRET");
-    if (s.length < 32 && process.env.NODE_ENV === "production") {
-      throw new Error("APP_SECRET doit contenir au moins 32 caractères en production.");
-    }
-    return s || "dev-secret-not-for-production-use-only-000000";
+    if (s.length >= 32) return s;
+    const db = read("DATABASE_URL");
+    if (db) return createHash("sha256").update(`app-secret|${db}`).digest("hex");
+    return "dev-secret-not-for-production-use-only-000000";
   },
   isProd: () => process.env.NODE_ENV === "production",
   smtp: () => ({

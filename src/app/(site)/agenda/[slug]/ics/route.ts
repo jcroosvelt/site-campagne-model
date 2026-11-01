@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { getEvent } from "@/lib/queries";
 import { localize } from "@/lib/i18n-shared-server";
 import { env } from "@/lib/env";
 
@@ -7,7 +7,7 @@ const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replac
 
 export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const e = await prisma.event.findFirst({ where: { slug, published: true } });
+  const e = await getEvent(slug);
   if (!e) return new Response("Introuvable", { status: 404 });
   const end = e.endsAt ?? new Date(e.startsAt.getTime() + 2 * 3600 * 1000);
   const ics = [

@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import type { Prisma } from "@prisma/client";
-import { prisma } from "./db";
+import { hasDatabase, prisma } from "./db";
 import { SECTIONS, buildSchema, type SectionKey, type SectionValue } from "./settings-schema";
 
 function merge<T>(defaults: T, stored: unknown): T {
@@ -15,6 +15,7 @@ function merge<T>(defaults: T, stored: unknown): T {
 
 /** Lit une section de paramètres (valeurs stockées fusionnées avec les valeurs par défaut). */
 export const getSetting = cache(async <K extends SectionKey>(key: K): Promise<SectionValue<K>> => {
+  if (!hasDatabase()) return SECTIONS[key].defaults as unknown as SectionValue<K>;
   const row = await prisma.setting.findUnique({ where: { key } });
   return merge(SECTIONS[key].defaults as unknown as SectionValue<K>, row?.value);
 });

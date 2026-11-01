@@ -1,11 +1,13 @@
 import "server-only";
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
-import { prisma } from "./db";
+import { hasDatabase, prisma } from "./db";
+import { publishedThemes } from "./queries";
 import { localize, localizeList, type Locale } from "./i18n-shared-server";
 import { winAnsi, wrapText } from "./receipt";
 
 /** Si un PDF officiel a été déposé dans l'administration, il est prioritaire ; sinon PDF généré. */
 export async function getProgramPdfUrl(): Promise<string> {
+  if (!hasDatabase()) return "/programme/pdf";
   const row = await prisma.setting.findUnique({ where: { key: "programPdf" } });
   const url = (row?.value as { url?: string } | null)?.url;
   return url || "/programme/pdf";
@@ -18,7 +20,7 @@ function stripMd(s: string) {
 const wrap = wrapText;
 
 export async function buildProgramPdf(locale: Locale, opts: { campaignName: string; candidateName: string; title: string }) {
-  const themes = await prisma.programTheme.findMany({ where: { published: true }, orderBy: { order: "asc" } });
+  const themes = await publishedThemes();
   const pdf = await PDFDocument.create();
   pdf.setTitle(winAnsi(`${opts.title} — ${opts.campaignName}`));
   const serif = await pdf.embedFont(StandardFonts.TimesRoman);

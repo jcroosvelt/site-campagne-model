@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { Prisma, Role } from "@prisma/client";
-import { prisma } from "@/lib/db";
+import { hasDatabase, prisma } from "@/lib/db";
 import {
   assertPermission, createSession, destroySession, dummyHash, ForbiddenError, getCurrentUser, hashPassword,
   LOCK_DURATION_MS, MAX_FAILED_LOGINS, validatePasswordStrength, verifyPassword,
@@ -62,6 +62,7 @@ export async function loginAction(_: FormState, fd: FormData): Promise<FormState
   const password = String(fd.get("password") ?? "").slice(0, 200);
   const ip = await getClientIp();
   const generic = { ok: false, message: "Identifiants incorrects." };
+  if (!hasDatabase()) return { ok: false, message: "Base de données non configurée : ajoutez DATABASE_URL dans Vercel puis redéployez." };
 
   if (!(await rateLimit(`login:ip:${ip}`, 20, 15 * 60 * 1000)).ok) return { ok: false, message: "Trop de tentatives. Réessayez dans 15 minutes." };
   if (!email || !password) return generic;

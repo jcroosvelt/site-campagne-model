@@ -77,6 +77,9 @@ ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run admin:create
 Placer l'application derrière un reverse proxy HTTPS (Caddy, Nginx + Let's Encrypt). Le `X-Forwarded-For` doit être transmis (limitation de débit, journal d'audit).
 
 ### Option B — Vercel / plateforme serverless + Supabase
+Le dépôt est déjà prêt pour Vercel : la commande `vercel-build` (`scripts/vercel-build.mjs`) applique les migrations, insère les contenus initiaux et crée le compte super administrateur (si `ADMIN_EMAIL` / `ADMIN_PASSWORD` sont définis) à chaque déploiement.
+**Sans base de données**, le site est tout de même déployé : les pages publiques s'affichent avec les contenus par défaut ; les formulaires et l'administration s'activent dès que `DATABASE_URL` est ajouté (puis « Redeploy »).
+
 1. Créer un projet Supabase ; utiliser la chaîne de connexion **pooler** pour `DATABASE_URL`.
 2. Créer un bucket **public** (ex. `public-media`) et définir `STORAGE_DRIVER=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (variable serveur uniquement). Le stockage local n'est **pas** persistant en serverless.
 3. Définir toutes les variables de `.env.example` dans la plateforme ; build : `npm run build` ; lancer `npx prisma migrate deploy` lors de chaque déploiement.

@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { prisma } from "@/lib/db";
 import { getDictionary } from "@/lib/i18n";
-import { publishedArticleWhere } from "@/lib/queries";
+import { getArticle, relatedArticles } from "@/lib/queries";
 import { env } from "@/lib/env";
 import { formatDate, toVideoEmbed } from "@/lib/utils";
 import { Markdown } from "@/components/ui/Markdown";
@@ -14,7 +13,7 @@ import { ShareButtons } from "@/components/site/ShareButtons";
 
 type Props = { params: Promise<{ slug: string }> };
 
-const load = (slug: string) => prisma.article.findFirst({ where: publishedArticleWhere({ slug }), include: { category: true } });
+const load = getArticle;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { l } = await getDictionary();
@@ -34,12 +33,7 @@ export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const a = await load(slug);
   if (!a) notFound();
-  const related = await prisma.article.findMany({
-    where: publishedArticleWhere({ id: { not: a.id }, ...(a.categoryId ? { categoryId: a.categoryId } : {}) }),
-    include: { category: true },
-    orderBy: { publishedAt: "desc" },
-    take: 3,
-  });
+  const related = await relatedArticles(a.id, a.categoryId);
   const embed = toVideoEmbed(a.videoUrl);
   const title = l(a.title);
   const jsonLd = { "@context": "https://schema.org", "@type": "NewsArticle", headline: title, datePublished: a.publishedAt?.toISOString(), dateModified: a.updatedAt.toISOString(), image: a.coverImage ? [a.coverImage] : undefined };

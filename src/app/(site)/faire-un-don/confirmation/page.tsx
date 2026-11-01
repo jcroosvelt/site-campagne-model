@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CircleCheck, CircleX, Clock, Download, Landmark, RotateCcw } from "lucide-react";
 import { timingSafeEqual } from "node:crypto";
-import { prisma } from "@/lib/db";
+import { hasDatabase, prisma } from "@/lib/db";
 import { getDictionary } from "@/lib/i18n";
 import { getSetting } from "@/lib/settings";
 import { syncWithProvider, transitionDonation } from "@/lib/donations";
@@ -22,7 +22,7 @@ function safeEqual(a: string, b: string) {
 export default async function ConfirmationPage({ searchParams }: Props) {
   const { t, l, locale } = await getDictionary();
   const { ref, token, annule } = await searchParams;
-  if (!ref || !token) notFound();
+  if (!ref || !token || !hasDatabase()) notFound();
   let d = await prisma.donation.findUnique({ where: { reference: ref } });
   if (!d || !safeEqual(d.accessToken, token)) notFound();
 

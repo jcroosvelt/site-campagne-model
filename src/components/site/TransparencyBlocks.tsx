@@ -1,5 +1,5 @@
 import { FileText } from "lucide-react";
-import { prisma } from "@/lib/db";
+import { publishedReports } from "@/lib/queries";
 import { getDictionary } from "@/lib/i18n";
 import { getSetting } from "@/lib/settings";
 import { formatDate } from "@/lib/utils";
@@ -26,7 +26,7 @@ export async function UsageCategories() {
 
 export async function FinancialReports() {
   const { t, l, locale } = await getDictionary();
-  const reports = await prisma.financialReport.findMany({ where: { published: true }, orderBy: { publishedAt: "desc" } });
+  const reports = await publishedReports();
   return (
     <div>
       <h2 className="h2">{t.donate.reportsTitle}</h2>

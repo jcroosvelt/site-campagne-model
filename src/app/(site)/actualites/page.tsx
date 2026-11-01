@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/db";
 import { getDictionary } from "@/lib/i18n";
-import { listArticles } from "@/lib/queries";
+import { listArticles, listCategories } from "@/lib/queries";
 import { PageHeader } from "@/components/ui/Section";
 import { ArticleCard } from "@/components/site/cards";
 import { Pagination } from "@/components/site/Pagination";
@@ -20,7 +19,7 @@ export default async function NewsPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
   const [categories, { items, pages }] = await Promise.all([
-    prisma.articleCategory.findMany({ orderBy: { order: "asc" } }),
+    listCategories(),
     listArticles({ category: sp.categorie, page }),
   ]);
   const qs = (p: number) => `/actualites?${new URLSearchParams({ ...(sp.categorie ? { categorie: sp.categorie } : {}), page: String(p) })}`;

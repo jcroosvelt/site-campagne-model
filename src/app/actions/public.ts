@@ -4,7 +4,7 @@ import { randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { hasDatabase, prisma } from "@/lib/db";
 import { getDictionary, LOCALES, LOCALE_COOKIE } from "@/lib/i18n";
 import { rateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/request";
@@ -30,6 +30,7 @@ export async function setLocaleAction(formData: FormData) {
 
 async function guard(fd: FormData, bucket: string, limit = 5): Promise<FormState | null> {
   const { t } = await getDictionary();
+  if (!hasDatabase()) return { ok: false, message: t.common.errorGeneric };
   if (looksLikeSpam(fd)) return { ok: true, message: t.common.sending }; // réponse neutre aux robots
   const ip = await getClientIp();
   const { ok } = await rateLimit(`form:${bucket}:${ip}`, limit, WINDOW);

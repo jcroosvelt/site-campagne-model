@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { hasDatabase, prisma } from "@/lib/db";
 import { getDictionary } from "@/lib/i18n";
 import { PageHeader } from "@/components/ui/Section";
 import Link from "next/link";
@@ -9,7 +9,7 @@ export default async function ConfirmNewsletter({ searchParams }: { searchParams
   const { t } = await getDictionary();
   const { token } = await searchParams;
   let ok = false;
-  if (token && token.length >= 20) {
+  if (hasDatabase() && token && token.length >= 20) {
     const res = await prisma.newsletterSubscriber.updateMany({ where: { token, status: "PENDING" }, data: { status: "CONFIRMED", confirmedAt: new Date() } });
     ok = res.count === 1 || (await prisma.newsletterSubscriber.count({ where: { token, status: "CONFIRMED" } })) === 1;
   }
