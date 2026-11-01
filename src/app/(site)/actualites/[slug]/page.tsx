@@ -41,14 +41,14 @@ export default async function ArticlePage({ params }: Props) {
   return (
     <article>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <header className="bg-navy-900 text-white">
+      <header className="bg-flag text-white">
         <div className="container-site max-w-4xl pt-32 pb-16 md:pt-40">
-          <Link href="/actualites" className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.news.title}</Link>
-          <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em]">
+          <Link href="/actualites" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.news.title}</Link>
+          <div className="mt-8 flex flex-wrap items-center gap-3 text-sm font-bold">
             {a.category && <Link href={`/actualites?categorie=${a.category.slug}`} className="text-gold-300">{l(a.category.name)}</Link>}
             {a.publishedAt && <time dateTime={a.publishedAt.toISOString()} className="text-white/60">{t.news.publishedOn} {formatDate(a.publishedAt, locale)}</time>}
           </div>
-          <h1 className="mt-5 font-serif text-4xl leading-tight font-semibold text-white md:text-5xl">{title}</h1>
+          <h1 className="mt-5 text-5xl leading-[0.95] font-black text-white condensed md:text-7xl">{title}</h1>
           <p className="mt-6 text-lg leading-relaxed text-white/70">{l(a.excerpt)}</p>
         </div>
       </header>
@@ -57,7 +57,7 @@ export default async function ArticlePage({ params }: Props) {
         <Markdown>{l(a.body)}</Markdown>
         {embed && (
           <div className="mt-12">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{t.news.video}</p>
+            <p className="mb-3 text-sm font-bold text-muted">{t.news.video}</p>
             <div className="relative aspect-video overflow-hidden bg-navy-950">
               <iframe src={embed} title={title} className="absolute inset-0 h-full w-full" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerPolicy="strict-origin-when-cross-origin" />
             </div>

@@ -39,7 +39,7 @@ export function GalleryGrid({ items, labels }: { items: GalleryItem[]; labels: {
                 </span>
               )}
               <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/85 to-transparent p-4 pt-12">
-                <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold-300">{it.category}</span>
+                <span className="block text-sm font-bold text-gold-300">{it.category}</span>
                 <span className="mt-1 block text-sm font-medium text-white">{it.title}</span>
               </span>
             </button>

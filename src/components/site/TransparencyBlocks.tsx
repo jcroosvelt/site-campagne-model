@@ -11,11 +11,11 @@ export async function UsageCategories() {
     <div>
       <h2 className="h2">{t.donate.usageTitle}</h2>
       <p className="lead mt-4 max-w-2xl">{t.donate.usageIntro}</p>
-      <ul className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2">
+      <ul className="mt-10 grid gap-4 sm:grid-cols-2">
         {cfg.usageCategories.map((c, i) => (
-          <li key={i} className="bg-white p-7">
-            <span className="font-serif text-sm font-semibold text-gold-600">{String(i + 1).padStart(2, "0")}</span>
-            <h3 className="mt-3 text-xl font-semibold">{l(c.title)}</h3>
+          <li key={i} className="rounded-2xl bg-white p-7">
+            <span className={`block h-1.5 w-10 rounded-full ${i % 2 ? "bg-crimson-600" : "bg-flag"}`} aria-hidden />
+            <h3 className="mt-5 text-2xl font-extrabold">{l(c.title)}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">{l(c.text)}</p>
           </li>
         ))}

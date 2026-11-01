@@ -36,7 +36,7 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out-soft",
-        scrolled ? "bg-white/95 shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "bg-transparent",
+        scrolled ? "bg-white shadow-[0_10px_30px_-20px_rgb(10_20_64/0.5)]" : "bg-transparent",
       )}
     >
       <div className="container-site flex h-20 items-center justify-between gap-6">
@@ -44,19 +44,14 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
           {brand.logoUrl ? (
             <img src={brand.logoUrl} alt="" className="h-10 w-auto" />
           ) : (
-            <span
-              className={cn(
-                "flex h-10 w-10 items-center justify-center border font-serif text-lg font-semibold transition-colors",
-                scrolled ? "border-navy-900 text-navy-900" : "border-white/70 text-white",
-              )}
-              aria-hidden
-            >
-              {brand.name.split(/\s+/).filter((w) => w.length > 3).map((w) => w[0]).slice(0, 2).join("") || brand.name[0]}
+            <span className="flex h-9 w-9 flex-col overflow-hidden rounded-lg ring-2 ring-white" aria-hidden>
+              <span className="flex-1 bg-flag" />
+              <span className="flex-1 bg-crimson-600" />
             </span>
           )}
-          <span className="flex flex-col leading-tight">
-            <span className={cn("font-serif text-[1.05rem] font-semibold transition-colors", scrolled ? "text-navy-900" : "text-white")}>{brand.name}</span>
-            <span className={cn("text-[0.68rem] uppercase tracking-[0.18em] transition-colors", scrolled ? "text-muted" : "text-white/60")}>{brand.tagline}</span>
+          <span className="flex flex-col leading-none">
+            <span className={cn("text-[1.15rem] font-extrabold tracking-tight transition-colors semi-condensed", scrolled ? "text-navy-900" : "text-white")}>{brand.name}</span>
+            <span className={cn("mt-1 text-[0.75rem] font-medium transition-colors", scrolled ? "text-muted" : "text-white/70")}>{brand.tagline}</span>
           </span>
         </Link>
 
@@ -68,10 +63,9 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
                   href={l.href}
                   aria-current={isActive(l.href) ? "page" : undefined}
                   className={cn(
-                    "relative px-2.5 py-2 text-[0.84rem] font-medium whitespace-nowrap transition-colors",
-                    scrolled ? "text-navy-900/80 hover:text-navy-900" : "text-white/80 hover:text-white",
-                    "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold-500 after:transition-transform after:duration-300 aria-[current=page]:after:scale-x-100",
-                    isActive(l.href) && (scrolled ? "text-navy-900" : "text-white"),
+                    "rounded-full px-3 py-2 text-[0.9rem] font-semibold whitespace-nowrap transition-colors",
+                    scrolled ? "text-navy-900/75 hover:bg-navy-50 hover:text-navy-900" : "text-white/80 hover:bg-white/10 hover:text-white",
+                    isActive(l.href) && (scrolled ? "bg-navy-50 text-flag" : "bg-white/15 text-white"),
                   )}
                 >
                   {l.label}
@@ -97,10 +91,10 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
               <Menu className="h-6 w-6" />
             </Dialog.Trigger>
             <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-50 bg-navy-950/60 backdrop-blur-sm data-[state=open]:animate-[rise_.3s_ease-out]" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-navy-900 text-white shadow-2xl focus:outline-none">
+              <Dialog.Overlay className="fixed inset-0 z-50 bg-navy-950/70" />
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-flag text-white shadow-2xl focus:outline-none">
                 <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
-                  <Dialog.Title className="font-serif text-lg text-white">{brand.name}</Dialog.Title>
+                  <Dialog.Title className="text-lg font-extrabold text-white">{brand.name}</Dialog.Title>
                   <Dialog.Close className="inline-flex h-11 w-11 items-center justify-center text-white/80 hover:text-white" aria-label={labels.close}>
                     <X className="h-6 w-6" />
                   </Dialog.Close>
@@ -108,12 +102,12 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
                 <Dialog.Description className="sr-only">{labels.menu}</Dialog.Description>
                 <nav aria-label="Navigation mobile" className="flex-1 overflow-y-auto px-6 py-6">
                   <ul className="space-y-1">
-                    {links.map((l, i) => (
-                      <li key={l.href} className="animate-rise" style={{ animationDelay: `${i * 35}ms` }}>
+                    {links.map((l) => (
+                      <li key={l.href}>
                         <Link
                           href={l.href}
                           aria-current={isActive(l.href) ? "page" : undefined}
-                          className="flex items-center justify-between border-b border-white/5 py-3.5 font-serif text-2xl text-white/85 hover:text-white aria-[current=page]:text-gold-300"
+                          className="flex items-center justify-between border-b border-white/10 py-3 text-[2rem] leading-tight font-extrabold text-white/85 condensed hover:text-white aria-[current=page]:text-gold-300"
                         >
                           {l.label}
                         </Link>
@@ -121,7 +115,7 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
                     ))}
                   </ul>
                 </nav>
-                <div className="space-y-5 border-t border-white/10 p-6">
+                <div className="space-y-5 bg-crimson-600 p-6">
                   <LocaleSwitcher locale={locale} label={labels.language} light />
                   <Link href="/faire-un-don" className="btn btn-donate w-full">
                     <Heart className="h-4 w-4" fill="currentColor" aria-hidden />

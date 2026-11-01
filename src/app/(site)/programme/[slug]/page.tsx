@@ -27,9 +27,9 @@ export default async function ThemePage({ params }: Props) {
   const measures = localizeList(th.measures, locale);
   return (
     <>
-      <header className="bg-navy-900 text-white">
+      <header className="bg-flag text-white">
         <div className="container-site pt-32 pb-16 md:pt-40">
-          <Link href="/programme" className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.program.allThemes}</Link>
+          <Link href="/programme" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.program.allThemes}</Link>
           <div className="mt-10 flex items-start gap-6">
             <ThemeIcon name={th.icon} className="mt-2 hidden h-12 w-12 text-gold-300 sm:block" />
             <div>
@@ -38,7 +38,7 @@ export default async function ThemePage({ params }: Props) {
             </div>
           </div>
         </div>
-        <div className="h-1 bg-crimson-600"><div className="h-full w-24 bg-gold-500" /></div>
+        <div className="h-5 bg-crimson-600" aria-hidden />
       </header>
       <div className="container-site grid gap-16 py-20 lg:grid-cols-12">
         <article className="lg:col-span-8">
@@ -62,7 +62,7 @@ export default async function ThemePage({ params }: Props) {
           <div className="sticky top-28 space-y-8">
             <a href={pdfUrl} download className="btn btn-primary w-full"><FileDown className="h-4 w-4" aria-hidden /> {t.program.downloadPdf}</a>
             <nav aria-label={t.program.otherThemes}>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">{t.program.otherThemes}</p>
+              <p className="mb-4 text-sm font-bold text-muted">{t.program.otherThemes}</p>
               <ul className="divide-y divide-line border-y border-line">
                 {others.filter((o) => o.id !== th.id).map((o) => (
                   <li key={o.id}>

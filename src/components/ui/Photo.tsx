@@ -30,33 +30,23 @@ export function Photo({
     );
   }
   return (
-    <div
-      className={cn("relative flex items-end overflow-hidden bg-navy-800", className)}
-      role="img"
-      aria-label={label ? `${alt} — ${label}` : alt}
-    >
+    <div className={cn("relative flex items-end overflow-hidden bg-navy-100", className)} role="img" aria-label={label ? `${alt} — ${label}` : alt}>
       <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" aria-hidden>
-        <defs>
-          <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,0.035)" strokeWidth="4" />
-          </pattern>
-        </defs>
-        <rect width="400" height="500" fill="url(#hatch)" />
         {variant === "portrait" ? (
-          <g fill="rgba(255,255,255,0.07)">
-            <circle cx="200" cy="190" r="78" />
-            <path d="M40 500c0-110 72-190 160-190s160 80 160 190Z" />
+          <g fill="rgb(0 32 159 / 0.14)">
+            <circle cx="200" cy="200" r="82" />
+            <path d="M30 500c0-118 76-200 170-200s170 82 170 200Z" />
           </g>
         ) : (
-          <g fill="rgba(255,255,255,0.06)">
-            <path d="M0 500 120 330l80 90 70-120 130 200Z" />
-            <circle cx="300" cy="150" r="40" />
+          <g fill="rgb(0 32 159 / 0.1)">
+            <path d="M0 500 130 320l80 95 75-130 115 215Z" />
+            <circle cx="300" cy="150" r="42" />
           </g>
         )}
       </svg>
       {label && (
-        <span className="relative m-4 inline-flex items-center gap-2 rounded-sm border border-white/15 bg-navy-950/60 px-2.5 py-1.5 text-[0.7rem] font-medium tracking-wide text-white/80 backdrop-blur-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-gold-500" />
+        <span className="relative m-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-navy-900 shadow-sm">
+          <span className="h-2 w-2 rounded-full bg-crimson-600" />
           {label}
         </span>
       )}

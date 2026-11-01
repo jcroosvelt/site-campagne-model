@@ -21,23 +21,23 @@ export default async function DonatePage() {
 
   return (
     <>
-      <header className="relative overflow-hidden bg-navy-900 text-white">
-        <div className="container-site relative pt-36 pb-40 md:pt-44">
-          <p className="kicker kicker-light mb-5 animate-rise">{t.nav.donate}</p>
-          <h1 className="display max-w-3xl text-white animate-rise delay-1">{t.donate.title}</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75 animate-rise delay-2">{t.donate.intro}</p>
-          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-white/80 animate-rise delay-3">
+      <header className="relative overflow-hidden bg-flag text-white">
+        <div className="container-site relative pt-36 pb-44 md:pt-44">
+          <p className="kicker kicker-light mb-5">{t.nav.donate}</p>
+          <h1 className="display max-w-4xl text-white">{t.donate.title}</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">{t.donate.intro}</p>
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-white/80">
             <li className="flex items-center gap-2"><Lock className="h-4 w-4 text-gold-300" aria-hidden /> {t.donate.trust1}</li>
             <li className="flex items-center gap-2"><Receipt className="h-4 w-4 text-gold-300" aria-hidden /> {t.donate.trust2}</li>
             <li className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-gold-300" aria-hidden /> {t.donate.trust3}</li>
           </ul>
         </div>
-        <div className="h-1 bg-crimson-600"><div className="h-full w-24 bg-gold-500" /></div>
+        <div className="h-5 bg-crimson-600" aria-hidden />
       </header>
 
       <section className="relative z-10 -mt-28 pb-20">
         <div className="container-site">
-          <div className="mx-auto max-w-3xl bg-white p-6 shadow-[0_30px_80px_-30px_rgba(11,31,58,0.35)] ring-1 ring-line sm:p-10 md:p-14">
+          <div className="mx-auto max-w-3xl rounded-[2rem] bg-white p-6 shadow-poster ring-1 ring-line sm:p-10 md:p-14">
             {available.length === 0 ? (
               <div className="py-6 text-center">
                 <ShieldCheck className="mx-auto h-10 w-10 text-gold-500" strokeWidth={1.25} aria-hidden />

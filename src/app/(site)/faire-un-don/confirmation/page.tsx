@@ -46,7 +46,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
 
   return (
     <>
-      <header className="bg-navy-900 pt-32 pb-36 text-white md:pt-40">
+      <header className="bg-flag pt-32 pb-36 text-white md:pt-40">
         <div className="container-site max-w-3xl">
           <p className="kicker kicker-light mb-5">{t.nav.donate}</p>
           <h1 className="display text-white">{t.confirmation.title}</h1>
@@ -54,11 +54,11 @@ export default async function ConfirmationPage({ searchParams }: Props) {
       </header>
       <section className="-mt-24 pb-24">
         <div className="container-site max-w-3xl">
-          <div className="bg-white p-8 shadow-[0_30px_80px_-30px_rgba(11,31,58,0.35)] ring-1 ring-line md:p-12">
+          <div className="rounded-[2rem] bg-white p-8 shadow-poster ring-1 ring-line md:p-12">
             <div className="flex items-start gap-4">
               <meta.Icon className={`h-8 w-8 shrink-0 ${meta.color}`} strokeWidth={1.5} aria-hidden />
               <div>
-                <p className={`text-sm font-semibold uppercase tracking-[0.18em] ${meta.color}`}>{t.confirmation.statuses[d.status]}</p>
+                <p className={`text-base font-extrabold ${meta.color}`}>{t.confirmation.statuses[d.status]}</p>
                 <p className="mt-2 leading-relaxed text-ink" role="status">{bankPending ? t.confirmation.bankText : meta.text}</p>
               </div>
             </div>
@@ -70,8 +70,8 @@ export default async function ConfirmationPage({ searchParams }: Props) {
                 [t.confirmation.date, formatDate(d.createdAt, locale, { dateStyle: "long", timeStyle: "short" })],
               ].map(([k, v], i) => (
                 <div key={i} className="bg-white p-5">
-                  <dt className="text-xs font-semibold uppercase tracking-[0.15em] text-muted">{k}</dt>
-                  <dd className="mt-1.5 font-serif text-xl font-semibold text-navy-900">{v}</dd>
+                  <dt className="text-sm font-semibold text-muted">{k}</dt>
+                  <dd className="mt-1.5 text-xl font-extrabold text-navy-900">{v}</dd>
                 </div>
               ))}
             </dl>

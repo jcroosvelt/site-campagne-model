@@ -37,11 +37,11 @@ export default async function AgendaPage({ searchParams }: Props) {
       <PageHeader kicker={t.nav.agenda} title={t.agenda.title} intro={t.agenda.intro} />
       <section className="py-16 md:py-24">
         <div className="container-site">
-          <div className="mb-12 inline-flex border border-line" role="tablist">
-            <Link href="/agenda" role="tab" aria-selected={view === "list"} className={cn("inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium", view === "list" ? "bg-navy-900 text-white" : "text-navy-900")}>
+          <div className="mb-12 inline-flex rounded-full bg-navy-50 p-1" role="tablist">
+            <Link href="/agenda" role="tab" aria-selected={view === "list"} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold", view === "list" ? "bg-flag text-white" : "text-navy-900")}>
               <List className="h-4 w-4" aria-hidden /> {t.agenda.list}
             </Link>
-            <Link href="/agenda?vue=calendrier" role="tab" aria-selected={view === "calendar"} className={cn("inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium", view === "calendar" ? "bg-navy-900 text-white" : "text-navy-900")}>
+            <Link href="/agenda?vue=calendrier" role="tab" aria-selected={view === "calendar"} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold", view === "calendar" ? "bg-flag text-white" : "text-navy-900")}>
               <CalendarDays className="h-4 w-4" aria-hidden /> {t.agenda.calendar}
             </Link>
           </div>
@@ -101,7 +101,7 @@ export default async function AgendaPage({ searchParams }: Props) {
           <Link href={`/agenda?vue=calendrier&mois=${ym(y, mo + 1)}`} className="inline-flex h-10 w-10 items-center justify-center border border-line" aria-label={t.common.next}><ChevronRight className="h-4 w-4" /></Link>
         </div>
         <div className="hidden grid-cols-7 border-t border-l border-line md:grid">
-          {t.agenda.weekdays.map((w) => <div key={w} className="border-r border-b border-line bg-ivory px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted">{w}</div>)}
+          {t.agenda.weekdays.map((w) => <div key={w} className="border-r border-b border-line bg-ivory px-3 py-2 text-sm font-bold text-muted">{w}</div>)}
           {cells.map((n, i) => {
             const k = n ? dayKey(new Date(Date.UTC(y, mo - 1, n, 12))) : "";
             const list = n ? byDay.get(k) ?? [] : [];

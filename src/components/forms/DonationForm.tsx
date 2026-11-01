@@ -41,14 +41,14 @@ export function DonationForm({
       <SpamGuard ts={ts} />
 
       <fieldset>
-        <legend className="mb-4 font-serif text-xl font-semibold text-navy-900">1. {t.donate.chooseAmount}</legend>
+        <legend className="mb-4 text-2xl font-extrabold text-navy-900">1. {t.donate.chooseAmount}</legend>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {amounts.map((a) => (
             <label
               key={a}
               className={cn(
-                "flex cursor-pointer items-center justify-center border px-4 py-4 text-center font-serif text-lg font-semibold transition-all duration-200",
-                amount === String(a) ? "border-navy-900 bg-navy-900 text-white" : "border-line text-navy-900 hover:border-navy-900/50",
+                "flex cursor-pointer items-center justify-center rounded-2xl border-2 px-4 py-4 text-center text-2xl font-black condensed transition-colors duration-200",
+                amount === String(a) ? "border-flag bg-flag text-white" : "border-line text-navy-900 hover:border-flag",
               )}
             >
               <input type="radio" name="amount" value={a} checked={amount === String(a)} onChange={() => setAmount(String(a))} className="sr-only" />
@@ -57,8 +57,8 @@ export function DonationForm({
           ))}
           <label
             className={cn(
-              "col-span-2 flex cursor-pointer items-center gap-3 border px-4 py-2 transition-all sm:col-span-3",
-              amount === "custom" ? "border-navy-900 ring-1 ring-navy-900" : "border-line",
+              "col-span-2 flex cursor-pointer items-center gap-3 rounded-2xl border-2 px-4 py-2 transition-colors sm:col-span-3",
+              amount === "custom" ? "border-flag" : "border-line",
             )}
           >
             <input type="radio" name="amount" value="custom" checked={amount === "custom"} onChange={() => setAmount("custom")} className="sr-only" />
@@ -71,7 +71,7 @@ export function DonationForm({
               placeholder={t.donate.customPlaceholder}
               aria-label={t.donate.customAmount}
               onFocus={() => setAmount("custom")}
-              className="w-full border-0 bg-transparent py-2 text-right font-serif text-lg focus:outline-none"
+              className="w-full border-0 bg-transparent py-2 text-right text-xl font-bold focus:outline-none"
             />
             <span className="text-xs font-medium text-muted">HTG</span>
           </label>
@@ -83,7 +83,7 @@ export function DonationForm({
       </fieldset>
 
       <fieldset>
-        <legend className="mb-4 font-serif text-xl font-semibold text-navy-900">2. {t.donate.yourInfo}</legend>
+        <legend className="mb-4 text-2xl font-extrabold text-navy-900">2. {t.donate.yourInfo}</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field name="firstName" label={t.donate.firstName} required autoComplete="given-name" error={e.firstName} />
           <Field name="lastName" label={t.donate.lastName} required autoComplete="family-name" error={e.lastName} />
@@ -104,7 +104,7 @@ export function DonationForm({
       </fieldset>
 
       <fieldset>
-        <legend className="mb-4 font-serif text-xl font-semibold text-navy-900">3. {t.donate.method}</legend>
+        <legend className="mb-4 text-2xl font-extrabold text-navy-900">3. {t.donate.method}</legend>
         <div className="space-y-3">
           {methods.map((m) => {
             const Icon = METHOD_ICONS[m];
@@ -112,8 +112,8 @@ export function DonationForm({
               <label
                 key={m}
                 className={cn(
-                  "flex cursor-pointer items-start gap-4 border p-4 transition-all",
-                  method === m ? "border-navy-900 bg-navy-50" : "border-line hover:border-navy-900/40",
+                  "flex cursor-pointer items-start gap-4 rounded-2xl border-2 p-4 transition-colors",
+                  method === m ? "border-flag bg-navy-50" : "border-line hover:border-flag/50",
                 )}
               >
                 <input type="radio" name="method" value={m} checked={method === m} onChange={() => setMethod(m)} className="mt-1 accent-navy-900" />
@@ -131,7 +131,7 @@ export function DonationForm({
 
       <fieldset className="space-y-4 border-t border-line pt-8">
         <legend className="sr-only">{t.donate.attestationsTitle}</legend>
-        <p className="text-sm font-semibold uppercase tracking-[0.15em] text-navy-900">{t.donate.attestationsTitle}</p>
+        <p className="text-lg font-extrabold text-navy-900">{t.donate.attestationsTitle}</p>
         {attestations.map((a) => (
           <Check key={a.id} name={`attest_${a.id}`} required label={a.text} error={e[`attest_${a.id}`]} />
         ))}

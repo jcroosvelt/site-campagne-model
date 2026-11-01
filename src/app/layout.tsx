@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/source-serif-4";
+import "@fontsource-variable/archivo/wdth.css";
 import "./globals.css";
 import { getLocale, getDictionary } from "@/lib/i18n";
 import { getSetting } from "@/lib/settings";
@@ -21,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const viewport: Viewport = { themeColor: "#0b1f3a", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#00209f", width: "device-width", initialScale: 1 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();

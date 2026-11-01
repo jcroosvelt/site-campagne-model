@@ -25,19 +25,18 @@ export default async function ProgramPage() {
       <section className="py-20 md:py-28">
         <div className="container-site">
           {themes.length === 0 && <p className="text-muted">{t.common.noContent}</p>}
-          <ol className="divide-y divide-line border-y border-line">
-            {themes.map((th, i) => (
+          <ul className="divide-y divide-line">
+            {themes.map((th) => (
               <li key={th.id}>
-                <Link href={`/programme/${th.slug}`} className="group grid items-center gap-6 py-8 transition-colors hover:bg-ivory md:grid-cols-[4rem_3rem_1fr_1.4fr_2rem] md:px-4">
-                  <span className="font-serif text-sm font-semibold text-gold-600">{String(i + 1).padStart(2, "0")}</span>
-                  <ThemeIcon name={th.icon} className="h-8 w-8 text-crimson-600" />
-                  <h2 className="text-2xl font-semibold">{l(th.title)}</h2>
+                <Link href={`/programme/${th.slug}`} className="group grid items-center gap-6 rounded-2xl py-7 transition-colors hover:bg-navy-50 md:grid-cols-[4rem_1fr_1.4fr_2rem] md:px-5">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-flag-100 text-flag transition-colors group-hover:bg-flag group-hover:text-white"><ThemeIcon name={th.icon} className="h-7 w-7" /></span>
+                  <h2 className="text-4xl font-black condensed sm:text-5xl">{l(th.title)}</h2>
                   <p className="leading-relaxed text-muted">{l(th.summary)}</p>
                   <ArrowUpRight className="hidden h-5 w-5 text-navy-900 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 md:block" aria-hidden />
                 </Link>
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
       </section>
     </>

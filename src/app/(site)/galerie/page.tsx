@@ -25,7 +25,7 @@ export default async function GalleryPage({ searchParams }: Props) {
     const q = new URLSearchParams(Object.entries({ type, categorie: category, ...p }).filter(([, v]) => v) as [string, string][]);
     return `/galerie${q.size ? `?${q}` : ""}`;
   };
-  const pill = (active: boolean) => cn("border px-4 py-2 text-sm font-medium transition-colors", active ? "border-navy-900 bg-navy-900 text-white" : "border-line text-navy-900 hover:border-navy-900");
+  const pill = (active: boolean) => cn("rounded-full px-4 py-2 text-sm font-bold transition-colors", active ? "bg-flag text-white" : "bg-navy-50 text-navy-900 hover:bg-flag-100");
 
   return (
     <>

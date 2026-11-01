@@ -22,7 +22,7 @@ export function VolunteerForm({ t, ts }: { t: Dictionary; ts: string }) {
         <legend className="label">{t.volunteer.interests}</legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {Object.entries(t.volunteer.interestOptions).map(([value, label]) => (
-            <label key={value} className="flex cursor-pointer items-center gap-3 border border-line px-4 py-3 text-sm transition-colors has-[:checked]:border-navy-900 has-[:checked]:bg-navy-50">
+            <label key={value} className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-line px-4 py-3 text-sm font-medium transition-colors has-[:checked]:border-flag has-[:checked]:bg-navy-50">
               <input type="checkbox" name="interests" value={value} className="checkbox mt-0" />
               {label}
             </label>

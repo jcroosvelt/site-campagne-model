@@ -33,7 +33,7 @@ export default async function NewsPage({ searchParams }: Props) {
               const active = (sp.categorie ?? "") === c.slug;
               return (
                 <Link key={c.slug || "all"} href={c.slug ? `/actualites?categorie=${c.slug}` : "/actualites"} aria-current={active ? "page" : undefined}
-                  className={cn("border px-4 py-2 text-sm font-medium transition-colors", active ? "border-navy-900 bg-navy-900 text-white" : "border-line text-navy-900 hover:border-navy-900")}>
+                  className={cn("rounded-full px-4 py-2 text-sm font-bold transition-colors", active ? "bg-flag text-white" : "bg-navy-50 text-navy-900 hover:bg-flag-100")}>
                   {c.name}
                 </Link>
               );

@@ -43,9 +43,9 @@ export default async function EventPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <header className="bg-navy-900 text-white">
+      <header className="bg-flag text-white">
         <div className="container-site pt-32 pb-16 md:pt-40">
-          <Link href="/agenda" className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.agenda.title}</Link>
+          <Link href="/agenda" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.agenda.title}</Link>
           <p className="kicker kicker-light mt-10">{t.agenda.types[e.type]}</p>
           <h1 className="display mt-5 max-w-4xl text-white">{title}</h1>
           <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-3 text-white/80">
@@ -53,7 +53,7 @@ export default async function EventPage({ params }: Props) {
             <div className="flex items-center gap-2"><dt className="sr-only">{t.agenda.location}</dt><MapPin className="h-4 w-4 text-gold-300" aria-hidden /><dd>{e.venue}, {e.address ? `${e.address}, ` : ""}{e.city}</dd></div>
           </dl>
         </div>
-        <div className="h-1 bg-crimson-600"><div className="h-full w-24 bg-gold-500" /></div>
+        <div className="h-5 bg-crimson-600" aria-hidden />
       </header>
       <div className="container-site grid gap-16 py-16 lg:grid-cols-12">
         <div className="lg:col-span-7">
