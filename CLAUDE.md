@@ -8,6 +8,8 @@ Le dépôt est connecté à **Vercel**, qui déploie automatiquement la branche 
 3. fusionner la branche de travail dans `main` et pousser `main` (`git push origin main`) pour déclencher le déploiement ;
 4. donner à l'utilisateur l'URL du site Vercel et signaler toute variable d'environnement manquante.
 
+**Règle permanente (décidée par l'utilisateur)** : chaque modification apportée au site est poussée sur `main` pour déploiement, sans demander de confirmation.
+
 ## Langue
 Communiquer avec l'utilisateur en **français**.
 
