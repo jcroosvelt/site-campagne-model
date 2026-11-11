@@ -19,7 +19,7 @@ export function ContactForm({ t, ts }: { t: Dictionary; ts: string }) {
         <Field name="subject" label={t.contact.subject} required error={e.subject} />
       </div>
       <TextArea name="message" label={t.contact.message} required rows={6} error={e.message} maxLength={5000} />
-      <Check name="consent" required error={e.consent} label={<>{t.contact.consent} <Link href="/confidentialite" className="underline">↗</Link></>} />
+      <Check name="consent" required error={e.consent} label={<>{t.contact.consent} <Link href="/confidentialite" target="_blank" className="underline">{t.footer.privacy}</Link></>} />
       <FormMessage state={state} />
       <SubmitButton pending={pending} pendingLabel={t.common.sending}>{t.common.send}</SubmitButton>
     </form>

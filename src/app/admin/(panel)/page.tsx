@@ -91,7 +91,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
                 </li>
               ))}
             </ul>
-            <Link href="/admin/dons/parametres" className="mt-3 inline-block text-sm font-medium text-navy-700 underline">Paramètres et conformité →</Link>
+            <Link href="/admin/dons/parametres" className="mt-3 inline-block text-sm font-medium text-navy-700 underline">Paramètres et conformité</Link>
           </Card>
         )}
         <Card title="Raccourcis">

@@ -12,6 +12,6 @@ if (process.env.DATABASE_URL) {
   run("npx prisma migrate deploy");
   run("npx tsx prisma/seed.ts");
 } else {
-  console.warn("\n⚠️  DATABASE_URL non défini : migrations ignorées. Ajoutez-le dans Vercel → Settings → Environment Variables puis redéployez.\n");
+  console.warn("\nAttention : DATABASE_URL non défini : migrations ignorées. Ajoutez-le dans Vercel > Settings > Environment Variables puis redéployez.\n");
 }
 run("npx next build");

@@ -74,7 +74,7 @@ async function main() {
         "Sample article illustrating the layout. Delete or replace it from the admin panel.",
       ),
       body: L(
-        "Ceci est un **article d'exemple**. Il ne relate aucun fait réel.\n\nUtilisez l'espace **Administration → Actualités** pour publier vos communiqués, comptes rendus et prises de position, avec images, vidéos et programmation de la date de publication.",
+        "Ceci est un **article d'exemple**. Il ne relate aucun fait réel.\n\nUtilisez l'espace **Administration > Actualités** pour publier vos communiqués, comptes rendus et prises de position, avec images, vidéos et programmation de la date de publication.",
         "Sa a se yon **atik egzanp**. Li pa rakonte okenn fè reyèl.",
         "This is a **sample article**. It does not report any real event.",
       ),

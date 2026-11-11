@@ -42,7 +42,7 @@ export default async function Users() {
           <table className="min-w-full text-sm">
             <thead><tr className="text-left text-xs uppercase text-slate-500"><th className="py-2 pr-4">Fonction</th>{Object.values(ROLE_LABELS).map((r) => <th key={r} className="px-3 py-2">{r}</th>)}</tr></thead>
             <tbody className="divide-y divide-slate-100">
-              {MATRIX.map(([label, ...v]) => <tr key={label}><td className="py-2 pr-4">{label}</td>{v.map((ok, i) => <td key={i} className="px-3 py-2 text-center">{ok ? "✓" : "—"}</td>)}</tr>)}
+              {MATRIX.map(([label, ...v]) => <tr key={label}><td className="py-2 pr-4">{label}</td>{v.map((ok, i) => <td key={i} className="px-3 py-2 text-center">{ok ? "Oui" : "Non"}</td>)}</tr>)}
             </tbody>
           </table>
         </div>

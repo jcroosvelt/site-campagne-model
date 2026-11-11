@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 export function AdminHeader({ title, description, actions, back }: { title: string; description?: string; actions?: React.ReactNode; back?: { href: string; label: string } }) {
   return (
     <div className="mb-8">
-      {back && <Link href={back.href} className="mb-3 inline-block text-sm text-slate-500 hover:text-slate-900">← {back.label}</Link>}
+      {back && <Link href={back.href} className="mb-3 inline-block text-sm text-slate-500 hover:text-slate-900">Retour : {back.label}</Link>}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="font-serif text-3xl font-semibold text-navy-900">{title}</h1>

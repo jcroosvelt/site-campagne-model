@@ -127,7 +127,7 @@ export const SECTIONS = {
     defaults: {
       messageTitle: L("Servir le pays, avec vous", "Sèvi peyi a, ansanm avèk nou", "Serving the country, with you"),
       messageBody: L(
-        P + "Ce texte est le message personnel du candidat aux citoyens. Il présente en quelques paragraphes les raisons de sa candidature, sa conception de l'engagement public et sa méthode.\n\nRemplacez-le depuis **Administration → Contenus → Page d'accueil**.",
+        P + "Ce texte est le message personnel du candidat aux citoyens. Il présente en quelques paragraphes les raisons de sa candidature, sa conception de l'engagement public et sa méthode.\n\nRemplacez-le depuis **Administration > Contenus > Page d'accueil**.",
         P + "Tèks sa a se mesaj pèsonèl kandida a pou sitwayen yo. Ranplase l nan espas administrasyon an.",
         P + "This is the candidate's personal message to citizens. Replace it from the admin panel.",
       ),
