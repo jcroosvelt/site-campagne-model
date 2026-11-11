@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowUpRight, MapPin } from "lucide-react";
 import type { Article, ArticleCategory, Event } from "@prisma/client";
 import { Photo } from "@/components/ui/Photo";
 import { formatDate, formatTime } from "@/lib/utils";
@@ -21,12 +20,12 @@ export function ArticleCard({ a, locale, size = "md" }: { a: ArticleWithCategory
   const title = localize(a.title, locale);
   return (
     <article className="group relative flex flex-col">
-      <Photo
+      {a.coverImage && (<Photo
         src={a.coverImage}
         alt={a.coverAlt || title}
         className={`${size === "lg" ? "aspect-[16/10] rounded-[1.75rem]" : "aspect-[3/2] rounded-2xl"} transition-transform duration-500 ease-out-soft group-hover:-translate-y-1`}
         sizes={size === "lg" ? "(min-width:1024px) 60vw, 100vw" : "(min-width:1024px) 30vw, 100vw"}
-      />
+      />)}
       <div className="mt-5"><ArticleMeta a={a} locale={locale} /></div>
       <h3 className={size === "lg" ? "mt-2 text-4xl font-extrabold condensed sm:text-5xl" : "mt-2 text-2xl font-extrabold"}>
         <Link href={`/actualites/${a.slug}`} className="after:absolute after:inset-0 group-hover:text-flag">{title}</Link>
@@ -40,8 +39,8 @@ export function ArticleCard({ a, locale, size = "md" }: { a: ArticleWithCategory
 export function ArticleRow({ a, locale }: { a: ArticleWithCategory; locale: Locale }) {
   const title = localize(a.title, locale);
   return (
-    <article className="group relative grid grid-cols-[7rem_1fr] gap-5 py-6 first:pt-0">
-      <Photo src={a.coverImage} alt={a.coverAlt || title} className="aspect-square rounded-xl" sizes="112px" />
+    <article className={`group relative grid gap-5 py-6 first:pt-0 ${a.coverImage ? "grid-cols-[7rem_1fr]" : ""}`}>
+      {a.coverImage && <Photo src={a.coverImage} alt={a.coverAlt || title} className="aspect-square rounded-xl" sizes="112px" />}
       <div>
         <ArticleMeta a={a} locale={locale} />
         <h3 className="mt-1.5 text-xl font-extrabold">
@@ -72,11 +71,8 @@ export function EventRow({ e, locale, t, light }: { e: Event; locale: Locale; t:
         <h3 className={`mt-1 text-xl font-extrabold sm:text-2xl ${light ? "text-white" : ""}`}>
           <Link href={`/agenda/${e.slug}`} className="after:absolute after:inset-0">{localize(e.title, locale)}</Link>
         </h3>
-        <p className={`mt-1 flex items-center gap-1.5 text-sm ${light ? "text-white/70" : "text-muted"}`}>
-          <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden /> {e.venue.replace("[À COMPLÉTER] ", "")}, {e.city}
+        <p className={`mt-1 flex items-center gap-1.5 text-sm ${light ? "text-white/70" : "text-muted"}`}> {e.venue}, {e.city}
         </p>
-      </div>
-      <ArrowUpRight className={`hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:block ${light ? "text-white" : "text-flag"}`} aria-hidden />
-    </article>
+      </div> </article>
   );
 }

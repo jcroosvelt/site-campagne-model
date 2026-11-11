@@ -1,7 +1,6 @@
 "use client";
 
 import { startTransition, useActionState } from "react";
-import { LoaderCircle, Lock } from "lucide-react";
 import { loginAction } from "../actions";
 
 export function LoginForm() {
@@ -25,7 +24,7 @@ export function LoginForm() {
       </div>
       {state.message && <p role="alert" className="border-l-2 border-crimson-600 bg-crimson-50 px-3 py-2 text-sm text-crimson-700">{state.message}</p>}
       <button type="submit" disabled={pending} className="btn btn-primary w-full">
-        {pending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />} Se connecter
+        Se connecter
       </button>
     </form>
   );

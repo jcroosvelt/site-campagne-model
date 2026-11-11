@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 
 export type GalleryItem = { id: string; type: "PHOTO" | "VIDEO"; title: string; image: string | null; embed: string | null; category: string };
 
-export function GalleryGrid({ items, labels }: { items: GalleryItem[]; labels: { close: string; previous: string; next: string; open: string } }) {
+export function GalleryGrid({ items, labels }: { items: GalleryItem[]; labels: { close: string; previous: string; next: string; open: string; video: string } }) {
   const [index, setIndex] = useState<number | null>(null);
   const current = index === null ? null : items[index];
   const go = useCallback((d: number) => setIndex((i) => (i === null ? i : (i + d + items.length) % items.length)), [items.length]);
@@ -35,7 +34,7 @@ export function GalleryGrid({ items, labels }: { items: GalleryItem[]; labels: {
               )}
               {it.type === "VIDEO" && (
                 <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-navy-900 shadow-lg transition-transform group-hover:scale-110"><Play className="ml-1 h-5 w-5" fill="currentColor" aria-hidden /></span>
+                  <span className="rounded-full bg-white px-4 py-2 text-sm font-bold text-navy-900 shadow-lg">{labels.video}</span>
                 </span>
               )}
               <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/85 to-transparent p-4 pt-12">
@@ -55,7 +54,7 @@ export function GalleryGrid({ items, labels }: { items: GalleryItem[]; labels: {
               <Dialog.Title className="truncate pr-4 text-sm font-medium">{current?.title}</Dialog.Title>
               <div className="flex items-center gap-4">
                 <span className="text-xs text-white/50">{index !== null ? `${index + 1} / ${items.length}` : ""}</span>
-                <Dialog.Close className="flex h-11 w-11 items-center justify-center text-white/80 hover:text-white" aria-label={labels.close}><X className="h-6 w-6" /></Dialog.Close>
+                <Dialog.Close className="rounded-full px-4 py-2 text-sm font-bold text-white ring-2 ring-white/40 hover:bg-white hover:text-navy-900">{labels.close}</Dialog.Close>
               </div>
             </div>
             <div className="relative flex flex-1 items-center justify-center px-4 pb-8 sm:px-20">
@@ -70,8 +69,8 @@ export function GalleryGrid({ items, labels }: { items: GalleryItem[]; labels: {
               ) : null}
               {items.length > 1 && (
                 <>
-                  <button type="button" onClick={() => go(-1)} className="absolute top-1/2 left-2 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-white/70 hover:text-white sm:left-6" aria-label={labels.previous}><ChevronLeft className="h-8 w-8" /></button>
-                  <button type="button" onClick={() => go(1)} className="absolute top-1/2 right-2 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-white/70 hover:text-white sm:right-6" aria-label={labels.next}><ChevronRight className="h-8 w-8" /></button>
+                  <button type="button" onClick={() => go(-1)} className="absolute bottom-4 left-4 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white hover:text-navy-900 sm:left-6">{labels.previous}</button>
+                  <button type="button" onClick={() => go(1)} className="absolute right-4 bottom-4 rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white hover:bg-white hover:text-navy-900 sm:right-6">{labels.next}</button>
                 </>
               )}
             </div>

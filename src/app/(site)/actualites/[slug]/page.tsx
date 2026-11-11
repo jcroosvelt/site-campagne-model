@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { getDictionary } from "@/lib/i18n";
 import { getArticle, relatedArticles } from "@/lib/queries";
 import { env } from "@/lib/env";
@@ -43,7 +42,7 @@ export default async function ArticlePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <header className="bg-flag text-white">
         <div className="container-site max-w-4xl pt-32 pb-16 md:pt-40">
-          <Link href="/actualites" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.news.title}</Link>
+          <Link href="/actualites" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"> {t.news.title}</Link>
           <div className="mt-8 flex flex-wrap items-center gap-3 text-sm font-bold">
             {a.category && <Link href={`/actualites?categorie=${a.category.slug}`} className="text-gold-300">{l(a.category.name)}</Link>}
             {a.publishedAt && <time dateTime={a.publishedAt.toISOString()} className="text-white/60">{t.news.publishedOn} {formatDate(a.publishedAt, locale)}</time>}

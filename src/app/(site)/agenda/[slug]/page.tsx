@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CalendarPlus, Clock, MapPin } from "lucide-react";
 import { getEvent, seatsTaken } from "@/lib/queries";
 import { getDictionary } from "@/lib/i18n";
 import { formatDate, formatTime } from "@/lib/utils";
@@ -45,12 +44,12 @@ export default async function EventPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <header className="bg-flag text-white">
         <div className="container-site pt-32 pb-16 md:pt-40">
-          <Link href="/agenda" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden /> {t.agenda.title}</Link>
+          <Link href="/agenda" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white"> {t.agenda.title}</Link>
           <p className="kicker kicker-light mt-10">{t.agenda.types[e.type]}</p>
           <h1 className="display mt-5 max-w-4xl text-white">{title}</h1>
           <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-3 text-white/80">
-            <div className="flex items-center gap-2"><dt className="sr-only">{t.agenda.date}</dt><Clock className="h-4 w-4 text-gold-300" aria-hidden /><dd className="capitalize">{formatDate(e.startsAt, locale, { weekday: "long", day: "numeric", month: "long", year: "numeric" })} · {formatTime(e.startsAt, locale)}{e.endsAt ? ` – ${formatTime(e.endsAt, locale)}` : ""}</dd></div>
-            <div className="flex items-center gap-2"><dt className="sr-only">{t.agenda.location}</dt><MapPin className="h-4 w-4 text-gold-300" aria-hidden /><dd>{e.venue}, {e.address ? `${e.address}, ` : ""}{e.city}</dd></div>
+            <div className="flex items-center gap-2"><dt className="sr-only">{t.agenda.date}</dt> <dd className="capitalize">{formatDate(e.startsAt, locale, { weekday: "long", day: "numeric", month: "long", year: "numeric" })} · {formatTime(e.startsAt, locale)}{e.endsAt ? ` – ${formatTime(e.endsAt, locale)}` : ""}</dd></div>
+            <div className="flex items-center gap-2"><dt className="sr-only">{t.agenda.location}</dt> <dd>{e.venue}, {e.address ? `${e.address}, ` : ""}{e.city}</dd></div>
           </dl>
         </div>
         <div className="h-5 bg-crimson-600" aria-hidden />
@@ -60,7 +59,7 @@ export default async function EventPage({ params }: Props) {
           {e.image && <Photo src={e.image} alt={title} className="mb-10 aspect-[16/9]" sizes="(min-width:1024px) 55vw, 100vw" />}
           <Markdown>{l(e.description)}</Markdown>
           <div className="mt-12 flex flex-wrap items-center gap-6 border-t border-line pt-8">
-            <a href={`/agenda/${e.slug}/ics`} className="btn btn-outline btn-sm"><CalendarPlus className="h-4 w-4" aria-hidden /> {t.agenda.addToCalendar}</a>
+            <a href={`/agenda/${e.slug}/ics`} className="btn btn-outline btn-sm"> {t.agenda.addToCalendar}</a>
             <ShareButtons url={`${env.appUrl()}/agenda/${e.slug}`} title={title} labels={t.common} />
           </div>
         </div>

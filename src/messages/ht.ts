@@ -39,6 +39,7 @@ const ht: typeof fr = {
     invalid: "Gen kèk enfòmasyon ki pa bon. Verifye fòmilè a.",
   },
   hero: {
+    defaultTitle: "Sit ofisyèl kanpay la",
     discover: "Dekouvri pwogram nou",
     join: "Antre nan kanpay la",
     donate: "Fè yon don pou sipòte kanpay la",

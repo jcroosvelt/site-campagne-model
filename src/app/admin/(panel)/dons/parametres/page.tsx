@@ -1,4 +1,3 @@
-import { CircleCheck, TriangleAlert } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { can } from "@/lib/permissions";
 import { SECTIONS } from "@/lib/settings-schema";
@@ -24,7 +23,7 @@ export default async function DonationSettings() {
         <ul className="grid gap-4 md:grid-cols-3">
           {statuses.map((s) => (
             <li key={s.method} className={`rounded-md border p-4 ${s.available ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"}`}>
-              <p className="flex items-center gap-2 font-semibold">{s.available ? <CircleCheck className="h-4 w-4 text-emerald-700" /> : <TriangleAlert className="h-4 w-4 text-amber-700" />}{METHOD_LABELS_FR[s.method]}</p>
+              <p className="flex items-center gap-2 font-semibold">{METHOD_LABELS_FR[s.method]}</p>
               {s.available ? <p className="mt-1 text-sm text-emerald-800">Proposé aux donateurs.</p> : <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-amber-900">{s.blockers.map((b) => <li key={b}>{b}</li>)}</ul>}
             </li>
           ))}

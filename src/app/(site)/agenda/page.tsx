@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarDays, ChevronLeft, ChevronRight, List } from "lucide-react";
 import { getDictionary } from "@/lib/i18n";
 import { eventsBetween, pastEvents, upcomingEvents } from "@/lib/queries";
 import { PageHeader } from "@/components/ui/Section";
@@ -38,11 +37,9 @@ export default async function AgendaPage({ searchParams }: Props) {
       <section className="py-16 md:py-24">
         <div className="container-site">
           <div className="mb-12 inline-flex rounded-full bg-navy-50 p-1" role="tablist">
-            <Link href="/agenda" role="tab" aria-selected={view === "list"} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold", view === "list" ? "bg-flag text-white" : "text-navy-900")}>
-              <List className="h-4 w-4" aria-hidden /> {t.agenda.list}
+            <Link href="/agenda" role="tab" aria-selected={view === "list"} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold", view === "list" ? "bg-flag text-white" : "text-navy-900")}> {t.agenda.list}
             </Link>
-            <Link href="/agenda?vue=calendrier" role="tab" aria-selected={view === "calendar"} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold", view === "calendar" ? "bg-flag text-white" : "text-navy-900")}>
-              <CalendarDays className="h-4 w-4" aria-hidden /> {t.agenda.calendar}
+            <Link href="/agenda?vue=calendrier" role="tab" aria-selected={view === "calendar"} className={cn("inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold", view === "calendar" ? "bg-flag text-white" : "text-navy-900")}> {t.agenda.calendar}
             </Link>
           </div>
           {view === "list" ? <ListView /> : <CalendarView mois={sp.mois} />}
@@ -96,9 +93,9 @@ export default async function AgendaPage({ searchParams }: Props) {
     return (
       <div>
         <div className="mb-6 flex items-center justify-between">
-          <Link href={`/agenda?vue=calendrier&mois=${ym(y, mo - 1)}`} className="inline-flex h-10 w-10 items-center justify-center border border-line" aria-label={t.common.previous}><ChevronLeft className="h-4 w-4" /></Link>
+          <Link href={`/agenda?vue=calendrier&mois=${ym(y, mo - 1)}`} className="rounded-full bg-navy-50 px-4 py-2 text-sm font-bold text-navy-900 hover:bg-flag-100">{t.common.previous}</Link>
           <h2 className="text-2xl font-semibold capitalize">{formatDate(new Date(Date.UTC(y, mo - 1, 15)), locale, { month: "long", year: "numeric" })}</h2>
-          <Link href={`/agenda?vue=calendrier&mois=${ym(y, mo + 1)}`} className="inline-flex h-10 w-10 items-center justify-center border border-line" aria-label={t.common.next}><ChevronRight className="h-4 w-4" /></Link>
+          <Link href={`/agenda?vue=calendrier&mois=${ym(y, mo + 1)}`} className="rounded-full bg-navy-50 px-4 py-2 text-sm font-bold text-navy-900 hover:bg-flag-100">{t.common.next}</Link>
         </div>
         <div className="hidden grid-cols-7 border-t border-l border-line md:grid">
           {t.agenda.weekdays.map((w) => <div key={w} className="border-r border-b border-line bg-ivory px-3 py-2 text-sm font-bold text-muted">{w}</div>)}

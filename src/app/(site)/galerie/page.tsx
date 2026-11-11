@@ -47,7 +47,7 @@ export default async function GalleryPage({ searchParams }: Props) {
             <p className="text-muted">{t.common.noContent}</p>
           ) : (
             <GalleryGrid
-              labels={{ close: t.nav.close, previous: t.common.previous, next: t.common.next, open: t.gallery.open }}
+              labels={{ close: t.nav.close, previous: t.common.previous, next: t.common.next, open: t.gallery.open, video: t.news.video }}
               items={items.map((m) => ({
                 id: m.id,
                 type: m.type,

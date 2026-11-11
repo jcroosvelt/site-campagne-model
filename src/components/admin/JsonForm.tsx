@@ -1,7 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
-import { ArrowDown, ArrowUp, ImageUp, LoaderCircle, Plus, Trash2 } from "lucide-react";
+import { useActionState, useId, useState } from "react";
 import type { Field } from "@/lib/settings-schema";
 import type { FormState } from "@/lib/forms";
 import { cn } from "@/lib/utils";
@@ -72,7 +71,7 @@ export function JsonForm({
       <FieldList fields={fields} values={values} onChange={setValues} locale={locale} errors={state.errors} />
       <div className="sticky bottom-0 -mx-1 flex items-center gap-4 border-t border-slate-200 bg-white/95 px-1 py-4 backdrop-blur">
         <button type="submit" disabled={pending} className="inline-flex items-center gap-2 rounded-md bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60">
-          {pending && <LoaderCircle className="h-4 w-4 animate-spin" />} {submitLabel}
+           {submitLabel}
         </button>
         {state.message && <p role="status" className={cn("text-sm", state.ok ? "text-emerald-700" : "text-crimson-600")}>{state.message}</p>}
       </div>
@@ -93,7 +92,8 @@ function FieldList({ fields, values, onChange, locale, errors, prefix = "" }: { 
 const inputCls = "block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-navy-700 focus:outline-none focus:ring-2 focus:ring-navy-700/15";
 
 function FieldInput({ field: f, value, onChange, locale, error }: { field: Field; value: unknown; onChange: (v: unknown) => void; locale: Locale; error?: string }) {
-  const id = useRef(`fld-${Math.random().toString(36).slice(2)}`).current;
+  // Identifiant stable entre le rendu serveur et le navigateur (évite tout décalage à l'hydratation).
+  const id = `fld-${useId().replace(/:/g, "")}`;
   const label = (
     <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-slate-800">
       {f.label}
@@ -183,17 +183,16 @@ function FieldInput({ field: f, value, onChange, locale, error }: { field: Field
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{f.itemLabel ?? "Élément"} {i + 1}</span>
                   <div className="flex gap-1">
-                    <button type="button" disabled={i === 0} onClick={() => move(i, -1)} className="rounded p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30" aria-label="Monter"><ArrowUp className="h-4 w-4" /></button>
-                    <button type="button" disabled={i === items.length - 1} onClick={() => move(i, 1)} className="rounded p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30" aria-label="Descendre"><ArrowDown className="h-4 w-4" /></button>
-                    <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} className="rounded p-1.5 text-crimson-600 hover:bg-crimson-50" aria-label="Supprimer"><Trash2 className="h-4 w-4" /></button>
+                    <button type="button" disabled={i === 0} onClick={() => move(i, -1)} className="rounded px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-30" >Monter</button>
+                    <button type="button" disabled={i === items.length - 1} onClick={() => move(i, 1)} className="rounded px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-30" >Descendre</button>
+                    <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} className="rounded px-2 py-1 text-xs font-medium text-crimson-600 hover:bg-crimson-50" >Supprimer</button>
                   </div>
                 </div>
                 <FieldList fields={f.fields} values={{ ...emptyItem(f.fields), ...it }} onChange={(v) => update(i, v)} locale={locale} />
               </div>
             ))}
           </div>
-          <button type="button" onClick={() => onChange([...items, emptyItem(f.fields)])} className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-navy-700 hover:text-navy-900">
-            <Plus className="h-4 w-4" /> Ajouter
+          <button type="button" onClick={() => onChange([...items, emptyItem(f.fields)])} className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-dashed border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-navy-700 hover:text-navy-900"> Ajouter
           </button>
           {err}
         </fieldset>
@@ -234,7 +233,7 @@ export function ImageInput({ id, value, onChange, accept = "image/jpeg,image/png
         <input id={id} className={inputCls} value={value} placeholder="/uploads/… ou https://…" onChange={(e) => onChange(e.target.value)} />
         <div className="flex items-center gap-3">
           <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:border-navy-700">
-            {busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ImageUp className="h-4 w-4" />} Téléverser
+            {busy ? "Envoi en cours…" : "Téléverser"}
             <input type="file" accept={accept} className="sr-only" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
           </label>
           {value && <button type="button" onClick={() => onChange("")} className="text-sm text-slate-500 hover:text-crimson-600">Retirer</button>}

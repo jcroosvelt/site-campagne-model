@@ -36,6 +36,7 @@ const fr = {
     invalid: "Certaines informations sont invalides. Vérifiez le formulaire.",
   },
   hero: {
+    defaultTitle: "Site officiel de campagne",
     discover: "Découvrir notre programme",
     join: "Rejoindre la campagne",
     donate: "Faire un don pour soutenir la campagne",

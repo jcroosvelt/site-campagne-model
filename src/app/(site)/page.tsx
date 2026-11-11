@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { ArrowUpRight, Check, Heart, Play } from "lucide-react";
 import { getDictionary } from "@/lib/i18n";
 import { getSetting } from "@/lib/settings";
 import { galleryItems, listArticles, publishedThemes, upcomingEvents } from "@/lib/queries";
 import { Photo } from "@/components/ui/Photo";
 import { Markdown } from "@/components/ui/Markdown";
-import { SectionHeading, isPlaceholder, Placeholder } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/Section";
 import { ArticleCard, ArticleRow, EventRow } from "@/components/site/cards";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { signTimestamp } from "@/lib/antispam";
@@ -22,7 +21,10 @@ export default async function HomePage() {
     galleryItems({ take: 5 }),
   ]);
   const [lead, ...rest] = news.items;
-  const strip = (s: string) => s.replace("[À COMPLÉTER] ", "");
+  const name = site.candidateName || site.campaignName || t.hero.defaultTitle;
+  const hasPortrait = Boolean(site.heroImage);
+  const hasMessage = Boolean(l(home.messageBody));
+  const hasVision = Boolean(l(home.visionTitle) || l(home.visionBody) || home.visionPillars.length);
 
   return (
     <>
@@ -32,13 +34,14 @@ export default async function HomePage() {
           <div className="hero-band absolute inset-0 bg-flag" aria-hidden />
           <div className="container-site relative pt-28 lg:pt-32">
             <div className="lg:max-w-[60%]">
-              <p className="hero-rise text-lg font-semibold text-white/80">{strip(l(site.electionLabel))}</p>
-              {/* Portrait mobile */}
-              <div className="hero-portrait mx-auto mt-6 w-3/4 max-w-xs lg:hidden">
-                <Photo src={site.heroImage} alt={site.candidateName} label={site.heroImage ? undefined : t.hero.photoPending} variant="portrait" priority className="aspect-[4/5] rounded-t-full" sizes="75vw" />
-              </div>
+              {l(site.electionLabel) && <p className="hero-rise text-lg font-semibold text-white/80">{l(site.electionLabel)}</p>}
+              {hasPortrait && (
+                <div className="hero-portrait mx-auto mt-6 w-3/4 max-w-xs lg:hidden">
+                  <Photo src={site.heroImage} alt={name} variant="portrait" priority className="aspect-[4/5] rounded-t-full" sizes="75vw" />
+                </div>
+              )}
               <h1 className="hero-rise relative z-10 mt-6 -mb-[0.34em] text-[clamp(3.6rem,10.5vw,9.75rem)] leading-[0.84] font-black text-white condensed">
-                {site.candidateName}
+                {name}
               </h1>
             </div>
           </div>
@@ -47,35 +50,36 @@ export default async function HomePage() {
           <div className="hero-band-2 absolute inset-0 bg-crimson-600" aria-hidden />
           <div className="container-site relative pt-[clamp(2.5rem,5vw,4.5rem)] pb-12 lg:pb-16">
             <div className="hero-rise-2 lg:max-w-[56%]">
-              <p className="text-2xl leading-snug font-bold text-white semi-condensed sm:text-3xl">{l(site.slogan)}</p>
-              <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/85">{l(site.heroMessage)}</p>
+              {l(site.slogan) && <p className="text-2xl leading-snug font-bold text-white semi-condensed sm:text-3xl">{l(site.slogan)}</p>}
+              {l(site.heroMessage) && <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/85">{l(site.heroMessage)}</p>}
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link href="/faire-un-don" className="btn btn-donate py-4 text-base">
-                  <Heart className="h-4 w-4" fill="currentColor" aria-hidden /> {t.hero.donate}
+                <Link href="/faire-un-don" className="btn btn-donate py-4 text-base"> {t.hero.donate}
                 </Link>
                 <Link href="/programme" className="btn btn-light">{t.hero.discover}</Link>
                 <Link href="/rejoindre" className="btn btn-outline-light">{t.hero.join}</Link>
               </div>
-              {isPlaceholder(l(site.heroMessage)) && <p className="mt-6"><Placeholder show text={t.common.placeholderNotice} /></p>}
             </div>
           </div>
         </div>
         {/* Portrait en arche, qui chevauche les deux bandes (grand écran) */}
-        <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden={false}>
-          <div className="container-site relative h-full">
-            <div className="hero-portrait absolute right-12 bottom-0 w-[min(34vw,30rem)]">
-              <Photo src={site.heroImage} alt={site.candidateName} label={site.heroImage ? undefined : t.hero.photoPending} variant="portrait" priority className="aspect-[4/5] rounded-t-full shadow-poster ring-[10px] ring-white" sizes="34vw" />
+        {hasPortrait && (
+          <div className="pointer-events-none absolute inset-0 hidden lg:block">
+            <div className="container-site relative h-full">
+              <div className="hero-portrait absolute right-12 bottom-0 w-[min(34vw,30rem)]">
+                <Photo src={site.heroImage} alt={name} variant="portrait" priority className="aspect-[4/5] rounded-t-full shadow-poster ring-[10px] ring-white" sizes="34vw" />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </section>
 
       {/* ───────── Message du candidat */}
+      {hasMessage && (
       <section className="py-24 md:py-32">
         <div className="container-site grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <p className="kicker mb-3">{t.home.messageKicker}</p>
-            <h2 className="h2">{l(home.messageTitle)}</h2>
+            <h2 className="h2">{l(home.messageTitle) || t.home.messageKicker}</h2>
           </div>
           <div className="flex gap-6 lg:col-span-7 lg:col-start-6 md:gap-10">
             <div className="flex w-1.5 shrink-0 flex-col overflow-hidden rounded-full" aria-hidden>
@@ -84,19 +88,21 @@ export default async function HomePage() {
             </div>
             <div>
               <Markdown className="prose-campaign text-xl leading-[1.7] sm:text-[1.35rem]">{l(home.messageBody)}</Markdown>
-              <p className="mt-8 text-lg font-extrabold text-navy-900">{home.messageSignature}</p>
+              {home.messageSignature && <p className="mt-8 text-lg font-extrabold text-navy-900">{home.messageSignature}</p>}
             </div>
           </div>
         </div>
       </section>
+      )}
 
       {/* ───────── Vision */}
+      {hasVision && (
       <section className="bg-navy-50 py-24 md:py-32">
         <div className="container-site">
           <SectionHeading
             kicker={t.home.visionKicker}
-            title={l(home.visionTitle)}
-            intro={l(home.visionBody)}
+            title={l(home.visionTitle) || t.home.visionKicker}
+            intro={l(home.visionBody) || undefined}
             action={<Link href="/notre-vision" className="btn btn-outline">{t.common.readMore}</Link>}
           />
           <ul className="grid gap-5 md:grid-cols-3">
@@ -110,6 +116,7 @@ export default async function HomePage() {
           </ul>
         </div>
       </section>
+      )}
 
       {/* ───────── Priorités : le programme en un mur de mots */}
       {themes.length > 0 && (
@@ -121,7 +128,7 @@ export default async function HomePage() {
                 <li key={th.id} className="flex items-baseline gap-5 sm:gap-7">
                   <Link
                     href={`/programme/${th.slug}`}
-                    title={l(th.summary).replace("[À COMPLÉTER] ", "")}
+                    title={l(th.summary) || undefined}
                     className="text-[2.6rem] leading-[1.05] font-black text-navy-900 condensed decoration-crimson-600 decoration-[6px] underline-offset-[10px] transition-colors hover:text-flag hover:underline sm:text-6xl lg:text-7xl"
                   >
                     {l(th.title)}
@@ -173,7 +180,7 @@ export default async function HomePage() {
                 <li key={m.id} className={i === 0 ? "col-span-2 row-span-2" : ""}>
                   <Link href="/galerie" className="group relative block h-full overflow-hidden rounded-2xl">
                     <Photo src={m.imageUrl || youtubeThumb(m.videoUrl)} alt={l(m.title)} className="h-full w-full transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]" sizes="(min-width:768px) 25vw, 50vw" />
-                    {m.type === "VIDEO" && <span className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-flag"><Play className="ml-0.5 h-4 w-4" fill="currentColor" aria-hidden /></span>}
+                    {m.type === "VIDEO" && <span className="absolute top-3 left-3 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-flag">{t.news.video}</span>}
                   </Link>
                 </li>
               ))}
@@ -186,8 +193,8 @@ export default async function HomePage() {
       <section className="bg-crimson-600 py-24 text-white md:py-28">
         <div className="container-site grid items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <h2 className="text-5xl leading-[0.92] font-black text-white condensed sm:text-7xl lg:text-8xl">{l(home.participationTitle)}</h2>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/90">{l(home.participationBody)}</p>
+            <h2 className="text-5xl leading-[0.92] font-black text-white condensed sm:text-7xl lg:text-8xl">{l(home.participationTitle) || t.home.participationKicker}</h2>
+            {l(home.participationBody) && <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/90">{l(home.participationBody)}</p>}
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col lg:items-stretch">
             <Link href="/rejoindre" className="btn btn-light py-4 text-base">{t.home.volunteer}</Link>
@@ -201,21 +208,19 @@ export default async function HomePage() {
         <div className="container-site grid items-center gap-12 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className="kicker mb-3">{t.home.donationKicker}</p>
-            <h2 className="h2">{l(home.donationTitle)}</h2>
-            <p className="lead mt-5 max-w-xl">{l(home.donationBody)}</p>
+            <h2 className="h2">{l(home.donationTitle) || t.donate.title}</h2>
+            {l(home.donationBody) && <p className="lead mt-5 max-w-xl">{l(home.donationBody)}</p>}
           </div>
           <div className="rounded-[2rem] bg-flag p-8 text-white shadow-poster sm:p-10 lg:col-span-5 lg:col-start-8">
             <ul className="space-y-3 text-lg font-semibold">
               {[t.donate.trust1, t.donate.trust2, t.donate.trust3].map((x) => (
-                <li key={x} className="flex items-center gap-3"><Check className="h-5 w-5 text-gold-300" strokeWidth={3} aria-hidden /> {x}</li>
+                <li key={x} className="flex items-center gap-3"> {x}</li>
               ))}
             </ul>
-            <Link href="/faire-un-don" className="btn btn-donate mt-8 w-full py-4 text-base">
-              <Heart className="h-4 w-4" fill="currentColor" aria-hidden /> {t.home.donateCta}
+            <Link href="/faire-un-don" className="btn btn-donate mt-8 w-full py-4 text-base"> {t.home.donateCta}
             </Link>
             <Link href="/transparence" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-white/85 underline decoration-white/40 underline-offset-4 hover:text-white">
-              {t.footer.transparency} <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </Link>
+              {t.footer.transparency} </Link>
           </div>
         </div>
       </section>
@@ -225,8 +230,8 @@ export default async function HomePage() {
         <div className="container-site">
           <div className="grid gap-10 rounded-[2rem] bg-navy-50 p-8 sm:p-12 lg:grid-cols-2 lg:items-center lg:p-16">
             <div>
-              <h2 className="h2">{l(home.newsletterTitle)}</h2>
-              <p className="lead mt-4">{l(home.newsletterBody)}</p>
+              <h2 className="h2">{l(home.newsletterTitle) || t.home.newsletterKicker}</h2>
+              {l(home.newsletterBody) && <p className="lead mt-4">{l(home.newsletterBody)}</p>}
             </div>
             <NewsletterForm t={t} ts={signTimestamp()} />
           </div>

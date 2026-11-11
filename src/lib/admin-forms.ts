@@ -1,10 +1,8 @@
 import type { Field } from "./settings-schema";
-import { THEME_ICON_KEYS } from "@/components/ui/icons-keys";
 
 export const themeFields: Field[] = [
   { name: "title", label: "Titre", type: "l10n" },
   { name: "slug", label: "Identifiant d'URL (laisser vide pour le générer)", type: "text" },
-  { name: "icon", label: "Icône", type: "select", options: THEME_ICON_KEYS.map((k) => ({ value: k, label: k })) },
   { name: "order", label: "Ordre d'affichage", type: "number", min: 0, max: 999 },
   { name: "summary", label: "Résumé", type: "l10nText" },
   { name: "body", label: "Présentation détaillée", type: "l10nMarkdown" },

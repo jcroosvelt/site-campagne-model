@@ -1,7 +1,6 @@
 "use client";
 
 import { startTransition, useActionState } from "react";
-import { LoaderCircle } from "lucide-react";
 import type { FormState } from "@/lib/forms";
 import { cn } from "@/lib/utils";
 
@@ -42,7 +41,7 @@ export function ActionForm({
             tone === "secondary" && "border border-slate-300 bg-white text-slate-800 hover:border-slate-400",
           )}
         >
-          {pending && <LoaderCircle className="h-4 w-4 animate-spin" />} {submitLabel}
+           {submitLabel}
         </button>
         {state.message && <p role="status" className={cn("text-sm", state.ok ? "text-emerald-700" : "text-red-700")}>{state.message}</p>}
       </div>

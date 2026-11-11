@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { TriangleAlert, CircleCheck } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { can } from "@/lib/permissions";
@@ -45,7 +44,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   const statuses = cfg && compliance ? methodStatuses(cfg, compliance) : [];
   const alerts: string[] = [];
   if (!isMailConfigured()) alerts.push("SMTP non configuré : les e-mails (reçus, confirmations) sont uniquement journalisés.");
-  if (site.candidateName === "Prénom NOM" || site.legalEntity.includes("[À COMPLÉTER]")) alerts.push("Des contenus provisoires [À COMPLÉTER] sont encore présents (identité de la campagne).");
+  if (!site.candidateName) alerts.push("Le nom du candidat n'est pas encore renseigné (Contenus du site > Identité de la campagne).");
 
   return (
     <>
@@ -53,7 +52,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       {refus && <p className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">Accès refusé : votre rôle ne permet pas d&apos;ouvrir cette page.</p>}
       {alerts.length > 0 && (
         <div className="mb-8 space-y-2">
-          {alerts.map((a) => <p key={a} className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"><TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" /> {a}</p>)}
+          {alerts.map((a) => <p key={a} className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"> {a}</p>)}
         </div>
       )}
 
@@ -80,7 +79,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
               {statuses.map((s) => (
                 <li key={s.method} className="py-3">
                   <p className="flex items-center gap-2 text-sm font-medium">
-                    {s.available ? <CircleCheck className="h-4 w-4 text-emerald-600" /> : <TriangleAlert className="h-4 w-4 text-amber-600" />}
+                    
                     {METHOD_LABELS_FR[s.method]} — {s.available ? "actif" : "inactif"}
                   </p>
                   {!s.available && <p className="mt-1 pl-6 text-xs text-slate-500">{s.blockers.join(" · ")}</p>}

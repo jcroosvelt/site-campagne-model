@@ -38,6 +38,7 @@ const en: typeof fr = {
     invalid: "Some information is invalid. Please check the form.",
   },
   hero: {
+    defaultTitle: "Official campaign website",
     discover: "Discover our platform",
     join: "Join the campaign",
     donate: "Donate to support the campaign",

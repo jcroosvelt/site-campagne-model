@@ -2,7 +2,6 @@
 
 import { startTransition, useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { CircleCheck, LoaderCircle, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { initialFormState, type FormState } from "@/lib/forms";
 
@@ -88,8 +87,7 @@ export function SubmitButton({ children, pendingLabel, className, pending: pendi
   return (
     <button type="submit" disabled={pending} className={cn("btn", className ?? "btn-primary")} aria-live="polite">
       {pending ? (
-        <>
-          <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden /> {pendingLabel}
+        <> {pendingLabel}
         </>
       ) : (
         children
@@ -108,7 +106,7 @@ export function FormMessage({ state }: { state: FormState }) {
         state.ok ? "border-emerald-600 bg-emerald-50 text-emerald-900" : "border-crimson-600 bg-crimson-50 text-crimson-700",
       )}
     >
-      {state.ok ? <CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> : <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />}
+      
       <span>{state.message}</span>
     </div>
   );

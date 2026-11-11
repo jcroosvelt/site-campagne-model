@@ -1,4 +1,3 @@
-import { FileText } from "lucide-react";
 import { publishedReports } from "@/lib/queries";
 import { getDictionary } from "@/lib/i18n";
 import { getSetting } from "@/lib/settings";
@@ -11,6 +10,7 @@ export async function UsageCategories() {
     <div>
       <h2 className="h2">{t.donate.usageTitle}</h2>
       <p className="lead mt-4 max-w-2xl">{t.donate.usageIntro}</p>
+      {cfg.usageCategories.length > 0 && (
       <ul className="mt-10 grid gap-4 sm:grid-cols-2">
         {cfg.usageCategories.map((c, i) => (
           <li key={i} className="rounded-2xl bg-white p-7">
@@ -20,6 +20,7 @@ export async function UsageCategories() {
           </li>
         ))}
       </ul>
+      )}
     </div>
   );
 }
@@ -36,9 +37,7 @@ export async function FinancialReports() {
         <ul className="mt-8 divide-y divide-line border-y border-line">
           {reports.map((r) => (
             <li key={r.id} className="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex gap-4">
-                <FileText className="mt-0.5 h-5 w-5 shrink-0 text-crimson-600" aria-hidden />
-                <div>
+              <div className="flex gap-4"> <div>
                   <p className="font-medium text-navy-900">{l(r.title)}</p>
                   <p className="text-sm text-muted">{r.period}{r.publishedAt ? ` · ${formatDate(r.publishedAt, locale)}` : ""}</p>
                 </div>

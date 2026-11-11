@@ -67,7 +67,6 @@ export function buildSchema(fields: Field[]) {
 // ─────────────────────────────────────────── Sections
 
 const L = (fr: string, ht = "", en = "") => ({ fr, ht, en });
-const P = "[À COMPLÉTER] ";
 
 export const SECTIONS = {
   site: {
@@ -84,18 +83,14 @@ export const SECTIONS = {
       { name: "legalEntity", label: "Entité juridique responsable (mentions, reçus)", type: "text" },
     ] as Field[],
     defaults: {
-      campaignName: "Ensemble pour Haïti",
-      candidateName: "Prénom NOM",
+      campaignName: "",
+      candidateName: "",
       logoUrl: "",
-      electionLabel: L(P + "Élection présidentielle", P + "Eleksyon prezidansyèl", P + "Presidential election"),
-      slogan: L("Bâtir ensemble un avenir digne", "Ann bati ansanm yon avni ak diyite", "Building a dignified future together"),
-      heroMessage: L(
-        P + "Message principal de la campagne : une phrase forte qui résume l'ambition du candidat pour le pays.",
-        P + "Mesaj prensipal kanpay la: yon fraz ki rezime anbisyon kandida a pou peyi a.",
-        P + "Main campaign message: one strong sentence summarising the candidate's ambition for the country.",
-      ),
+      electionLabel: L("", "", ""),
+      slogan: L("", "", ""),
+      heroMessage: L("", "", ""),
       heroImage: "",
-      legalEntity: P + "Comité de campagne — dénomination officielle",
+      legalEntity: "",
     },
   },
   home: {
@@ -125,42 +120,18 @@ export const SECTIONS = {
       { name: "newsletterBody", label: "Newsletter — texte", type: "l10nText" },
     ] as Field[],
     defaults: {
-      messageTitle: L("Servir le pays, avec vous", "Sèvi peyi a, ansanm avèk nou", "Serving the country, with you"),
-      messageBody: L(
-        P + "Ce texte est le message personnel du candidat aux citoyens. Il présente en quelques paragraphes les raisons de sa candidature, sa conception de l'engagement public et sa méthode.\n\nRemplacez-le depuis **Administration > Contenus > Page d'accueil**.",
-        P + "Tèks sa a se mesaj pèsonèl kandida a pou sitwayen yo. Ranplase l nan espas administrasyon an.",
-        P + "This is the candidate's personal message to citizens. Replace it from the admin panel.",
-      ),
-      messageSignature: "Prénom NOM",
-      visionTitle: L("Une Haïti stable, juste et prospère", "Yon Ayiti ki estab, jis e pwospè", "A stable, fair and prosperous Haiti"),
-      visionBody: L(
-        P + "Résumé de la vision : le cap que le candidat propose au pays pour les cinq prochaines années.",
-        P + "Rezime vizyon an: direksyon kandida a pwopoze pou peyi a pou senk ane k ap vini yo.",
-        P + "Summary of the vision: the course the candidate proposes for the next five years.",
-      ),
-      visionPillars: [
-        { title: L("Sécurité et État de droit", "Sekirite ak Eta de dwa", "Security and rule of law"), text: L(P + "Description du pilier.", P + "Deskripsyon.", P + "Pillar description.") },
-        { title: L("Dignité et services essentiels", "Diyite ak sèvis esansyèl", "Dignity and essential services"), text: L(P + "Description du pilier.", P + "Deskripsyon.", P + "Pillar description.") },
-        { title: L("Travail et production nationale", "Travay ak pwodiksyon nasyonal", "Work and national production"), text: L(P + "Description du pilier.", P + "Deskripsyon.", P + "Pillar description.") },
-      ],
-      participationTitle: L("Cette campagne est la vôtre", "Kanpay sa a se pou nou", "This campaign is yours"),
-      participationBody: L(
-        "Bénévoles, sympathisants, citoyens engagés : chacun peut contribuer à porter ce projet dans sa commune.",
-        "Volontè, sipòtè, sitwayen angaje: chak moun ka ede pote pwojè sa a nan komin li.",
-        "Volunteers, supporters, engaged citizens: everyone can help carry this project in their community.",
-      ),
-      donationTitle: L("Soutenez la campagne", "Sipòte kanpay la", "Support the campaign"),
-      donationBody: L(
-        "Les contributions volontaires des citoyens permettent de financer une campagne indépendante, transparente et proche du terrain.",
-        "Kontribisyon volontè sitwayen yo pèmèt nou finanse yon kanpay endepandan, transparan e pre moun yo.",
-        "Voluntary contributions from citizens fund an independent, transparent, grassroots campaign.",
-      ),
-      newsletterTitle: L("Restez informé(e)", "Rete enfòme", "Stay informed"),
-      newsletterBody: L(
-        "Recevez les nouvelles de la campagne et les dates des prochains rendez-vous.",
-        "Resevwa nouvèl kanpay la ak dat pwochen randevou yo.",
-        "Get campaign news and upcoming event dates.",
-      ),
+      messageTitle: L("", "", ""),
+      messageBody: L("", "", ""),
+      messageSignature: "",
+      visionTitle: L("", "", ""),
+      visionBody: L("", "", ""),
+      visionPillars: [] as { title: ReturnType<typeof L>; text: ReturnType<typeof L> }[],
+      participationTitle: L("", "", ""),
+      participationBody: L("", "", ""),
+      donationTitle: L("", "", ""),
+      donationBody: L("", "", ""),
+      newsletterTitle: L("", "", ""),
+      newsletterBody: L("", "", ""),
     },
   },
   candidate: {
@@ -227,22 +198,15 @@ export const SECTIONS = {
     ] as Field[],
     defaults: {
       portrait: "",
-      role: L(P + "Candidat à l'élection présidentielle", P + "Kandida nan eleksyon prezidansyèl", P + "Presidential candidate"),
-      intro: L(P + "Courte présentation du candidat en deux phrases.", P + "Ti prezantasyon kandida a.", P + "Short introduction of the candidate."),
-      biography: L(
-        P + "Biographie du candidat : origines, valeurs, étapes marquantes. Chaque fait doit pouvoir être vérifié.",
-        P + "Biyografi kandida a.",
-        P + "Candidate biography.",
-      ),
-      education: [{ period: "AAAA – AAAA", title: L(P + "Diplôme", P + "Diplòm", P + "Degree"), institution: P + "Établissement" }],
-      career: [{ period: "AAAA – AAAA", title: L(P + "Fonction", P + "Fonksyon", P + "Position"), organization: P + "Organisation" }],
-      publicService: [{ period: "AAAA – AAAA", title: L(P + "Mandat", P + "Manda", P + "Office"), organization: P + "Institution" }],
-      commitments: [
-        { text: L(P + "Engagement n°1", P + "Angajman 1", P + "Commitment 1") },
-        { text: L(P + "Engagement n°2", P + "Angajman 2", P + "Commitment 2") },
-      ],
+      role: L("", "", ""),
+      intro: L("", "", ""),
+      biography: L("", "", ""),
+      education: [] as { period: string; title: ReturnType<typeof L>; institution: string }[],
+      career: [] as { period: string; title: ReturnType<typeof L>; organization: string }[],
+      publicService: [] as { period: string; title: ReturnType<typeof L>; organization: string }[],
+      commitments: [] as { text: ReturnType<typeof L> }[],
       achievements: [] as { year: string; title: ReturnType<typeof L>; text: ReturnType<typeof L>; sourceUrl: string }[],
-      personalMessage: L(P + "Message personnel du candidat.", P + "Mesaj pèsonèl kandida a.", P + "Personal message from the candidate."),
+      personalMessage: L("", "", ""),
     },
   },
   contact: {
@@ -266,8 +230,8 @@ export const SECTIONS = {
       email: "",
       phone: "",
       whatsapp: "",
-      address: P + "Adresse du quartier général de campagne",
-      hours: L("Lundi – vendredi, 9 h – 17 h", "Lendi – vandredi, 9è – 5è", "Monday – Friday, 9am – 5pm"),
+      address: "",
+      hours: L("", "", ""),
       notifyEmail: "",
       facebook: "",
       instagram: "",
@@ -329,7 +293,7 @@ export const SECTIONS = {
       { name: "indexable", label: "Autoriser l'indexation par les moteurs de recherche", type: "boolean" },
     ] as Field[],
     defaults: {
-      title: L("Ensemble pour Haïti — Site officiel de campagne", "Ansanm pou Ayiti — Sit ofisyèl kanpay la", "Ensemble pour Haïti — Official campaign website"),
+      title: L("Site officiel de campagne", "Sit ofisyèl kanpay la", "Official campaign website"),
       description: L(
         "Programme, actualités, agenda et soutien à la campagne.",
         "Pwogram, nouvèl, ajanda ak sipò pou kanpay la.",
@@ -350,22 +314,14 @@ export const SECTIONS = {
       { name: "termsVersion", label: "Version des conditions (à changer à chaque modification)", type: "text" },
     ] as Field[],
     defaults: {
-      mentions: L(
-        "## Éditeur du site\n\n[À COMPLÉTER] Dénomination de l'entité responsable de la campagne, adresse, responsable de la publication, contact.\n\n## Hébergement\n\n[À COMPLÉTER] Nom et adresse de l'hébergeur.\n\n## Propriété intellectuelle\n\nLes contenus de ce site sont la propriété de la campagne, sauf mention contraire.",
-        "",
-        "",
-      ),
+      mentions: L("", "", ""),
       privacy: L(
-        "## Données collectées\n\nNous ne collectons que les données strictement nécessaires : formulaires de contact, de bénévolat, d'inscription aux événements, newsletter et contributions.\n\n## Finalités\n\nTraitement des demandes, organisation de la campagne, gestion et déclaration des contributions conformément à la loi.\n\n## Paiements\n\nLes données de carte bancaire sont traitées exclusivement par nos prestataires de paiement certifiés. La campagne ne stocke jamais de numéro de carte.\n\n## Durée de conservation\n\n[À COMPLÉTER selon les obligations légales applicables.]\n\n## Vos droits\n\nVous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à l'adresse de contact officielle.\n\n## Mesure d'audience\n\nLe site mesure sa fréquentation de manière anonyme, sans cookie publicitaire. Le signal « Do Not Track » de votre navigateur est respecté.",
+        "## Données collectées\n\nNous ne collectons que les données strictement nécessaires : formulaires de contact, de bénévolat, d'inscription aux événements, newsletter et contributions.\n\n## Finalités\n\nTraitement des demandes, organisation de la campagne, gestion et déclaration des contributions conformément à la loi.\n\n## Paiements\n\nLes données de carte bancaire sont traitées exclusivement par nos prestataires de paiement. La campagne ne stocke jamais de numéro de carte.\n\n## Vos droits\n\nVous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à l'adresse de contact officielle.\n\n## Mesure d'audience\n\nLe site mesure sa fréquentation de manière anonyme, sans cookie publicitaire. Le signal « Do Not Track » de votre navigateur est respecté.",
         "",
         "",
       ),
-      terms: L(
-        "## Conditions de contribution\n\n[À COMPLÉTER et faire valider par un conseil juridique avant l'ouverture des dons.]\n\n1. Les contributions sont volontaires et effectuées à titre personnel, avec des fonds propres.\n2. Les contributions sont soumises aux plafonds et aux règles de financement politique en vigueur.\n3. Les contributions de personnes ou d'entités non autorisées par la loi sont refusées et remboursées.\n4. Le donateur garantit l'exactitude des informations fournies.\n5. Les contributions peuvent faire l'objet d'une déclaration aux autorités compétentes conformément à la loi.\n6. Un reçu est délivré uniquement après confirmation effective du paiement.",
-        "",
-        "",
-      ),
-      termsVersion: "2026-11-01",
+      terms: L("", "", ""),
+      termsVersion: "",
     },
   },
   donations: {
@@ -440,12 +396,7 @@ export const SECTIONS = {
       bankAccountNumber: "",
       bankSwift: "",
       bankInstructions: L("", "", ""),
-      usageCategories: [
-        { title: L("Rencontres citoyennes", "Rankont sitwayen", "Town halls"), text: L("Organisation de meetings et de réunions publiques dans les communes.", "Òganize reyinyon piblik nan komin yo.", "Organising public meetings across communities.") },
-        { title: L("Communication", "Kominikasyon", "Communications"), text: L("Impression de documents, diffusion du programme, présence numérique.", "Enprime dokiman, pataje pwogram nan, prezans sou entènèt.", "Printing, distributing the platform, digital presence.") },
-        { title: L("Déplacements", "Deplasman", "Travel"), text: L("Visites de terrain dans les dix départements.", "Vizit sou teren nan dis depatman yo.", "Field visits across the ten departments.") },
-        { title: L("Logistique et observation", "Lojistik ak obsèvasyon", "Logistics and observation"), text: L("Matériel, formation des bénévoles et des observateurs électoraux.", "Materyèl, fòmasyon volontè ak obsèvatè.", "Equipment, volunteer and observer training.") },
-      ],
+      usageCategories: [] as { title: ReturnType<typeof L>; text: ReturnType<typeof L> }[],
     },
   },
   compliance: {

@@ -12,7 +12,7 @@ export async function Header() {
       <HeaderShell
         links={links}
         locale={locale}
-        brand={{ name: site.campaignName, tagline: l(site.electionLabel).replace("[À COMPLÉTER] ", ""), logoUrl: site.logoUrl || undefined }}
+        brand={{ name: site.campaignName || site.candidateName || t.hero.defaultTitle, tagline: l(site.electionLabel), logoUrl: site.logoUrl || undefined }}
         labels={{ donate: t.nav.donate, menu: t.nav.menu, close: t.nav.close, language: t.nav.language }}
       />
     </Suspense>

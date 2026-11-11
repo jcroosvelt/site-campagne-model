@@ -150,3 +150,20 @@
 /* Largeurs typographiques (axe « wdth » d'Archivo) */
 @utility condensed { font-variation-settings: "wdth" 68; }
 @utility semi-condensed { font-variation-settings: "wdth" 82; }
+
+/*
+ * Saisie sur mobile : champs en 16 px minimum (sinon iOS zoome au toucher et le champ semble
+ * ne pas répondre), toucher immédiat sans délai de double-tap, et sélection de texte autorisée.
+ */
+@layer base {
+  input, textarea, select, [contenteditable="true"] {
+    touch-action: manipulation;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+  @media (max-width: 1023px) {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select {
+      font-size: 16px !important;
+    }
+  }
+}

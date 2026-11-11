@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Heart, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/lib/navigation";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -79,25 +78,21 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
           <div className="hidden md:block">
             <LocaleSwitcher locale={locale} label={labels.language} light={!scrolled} />
           </div>
-          <Link href="/faire-un-don" className="btn btn-donate btn-sm hidden whitespace-nowrap sm:inline-flex">
-            <Heart className="h-3.5 w-3.5" fill="currentColor" aria-hidden />
-            {labels.donate}
+          <Link href="/faire-un-don" className="btn btn-donate btn-sm hidden whitespace-nowrap sm:inline-flex"> {labels.donate}
           </Link>
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger
-              className={cn("inline-flex h-11 w-11 items-center justify-center xl:hidden", scrolled ? "text-navy-900" : "text-white")}
+              className={cn("inline-flex h-11 items-center rounded-full px-4 text-sm font-bold ring-2 xl:hidden", scrolled ? "ring-navy-900/20" : "ring-white/40", scrolled ? "text-navy-900" : "text-white")}
               aria-label={labels.menu}
             >
-              <Menu className="h-6 w-6" />
+              {labels.menu}
             </Dialog.Trigger>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 z-50 bg-navy-950/70" />
               <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-flag text-white shadow-2xl focus:outline-none">
                 <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
                   <Dialog.Title className="text-lg font-extrabold text-white">{brand.name}</Dialog.Title>
-                  <Dialog.Close className="inline-flex h-11 w-11 items-center justify-center text-white/80 hover:text-white" aria-label={labels.close}>
-                    <X className="h-6 w-6" />
-                  </Dialog.Close>
+                  <Dialog.Close className="inline-flex h-11 items-center rounded-full px-4 text-sm font-bold text-white ring-2 ring-white/40 hover:bg-white hover:text-flag">{labels.close}</Dialog.Close>
                 </div>
                 <Dialog.Description className="sr-only">{labels.menu}</Dialog.Description>
                 <nav aria-label="Navigation mobile" className="flex-1 overflow-y-auto px-6 py-6">
@@ -117,9 +112,7 @@ export function HeaderShell({ links, brand, labels, locale }: Props) {
                 </nav>
                 <div className="space-y-5 bg-crimson-600 p-6">
                   <LocaleSwitcher locale={locale} label={labels.language} light />
-                  <Link href="/faire-un-don" className="btn btn-donate w-full">
-                    <Heart className="h-4 w-4" fill="currentColor" aria-hidden />
-                    {labels.donate}
+                  <Link href="/faire-un-don" className="btn btn-donate w-full"> {labels.donate}
                   </Link>
                 </div>
               </Dialog.Content>

@@ -17,7 +17,7 @@ export default async function SectionPage({ params }: { params: Promise<{ sectio
   const value = await getSetting(section as SectionKey);
   return (
     <>
-      <AdminHeader title={def.title} back={{ href: "/admin/contenus", label: "Contenus" }} description="Les mentions [À COMPLÉTER] signalent des contenus provisoires à remplacer avant la mise en ligne." />
+      <AdminHeader title={def.title} back={{ href: "/admin/contenus", label: "Contenus" }} description="Les champs laissés vides ne sont pas affichés sur le site." />
       <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
         <JsonForm fields={def.fields} initial={value as Record<string, unknown>} action={saveSettingsAction} hidden={{ section }} />
       </div>

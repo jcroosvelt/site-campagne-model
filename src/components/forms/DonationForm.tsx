@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CreditCard, Landmark, Lock, Smartphone } from "lucide-react";
 import { submitDonation } from "@/app/actions/public";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n";
 import { Check, Field, FormMessage, SpamGuard, SubmitButton, useNoResetForm } from "./fields";
 
 type Method = "CARD" | "MONCASH" | "BANK_TRANSFER";
-const METHOD_ICONS = { CARD: CreditCard, MONCASH: Smartphone, BANK_TRANSFER: Landmark };
 
 export function DonationForm({
   t,
@@ -107,7 +105,6 @@ export function DonationForm({
         <legend className="mb-4 text-2xl font-extrabold text-navy-900">3. {t.donate.method}</legend>
         <div className="space-y-3">
           {methods.map((m) => {
-            const Icon = METHOD_ICONS[m];
             return (
               <label
                 key={m}
@@ -117,7 +114,6 @@ export function DonationForm({
                 )}
               >
                 <input type="radio" name="method" value={m} checked={method === m} onChange={() => setMethod(m)} className="mt-1 accent-navy-900" />
-                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-navy-700" strokeWidth={1.5} aria-hidden />
                 <span>
                   <span className="block font-medium text-navy-900">{t.donate.methods[m]}</span>
                   <span className="mt-1 block text-sm text-muted">{t.donate.methodHints[m]}</span>
@@ -152,8 +148,7 @@ export function DonationForm({
       <FormMessage state={state} />
       <div className="space-y-4">
         <SubmitButton pending={pending} pendingLabel={t.common.sending} className="btn-donate w-full py-4 text-base">{t.donate.submit}</SubmitButton>
-        <p className="flex items-center justify-center gap-2 text-center text-xs text-muted">
-          <Lock className="h-3.5 w-3.5" aria-hidden /> {t.donate.secure}
+        <p className="flex items-center justify-center gap-2 text-center text-xs text-muted"> {t.donate.secure}
         </p>
       </div>
     </form>

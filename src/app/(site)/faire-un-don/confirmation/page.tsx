@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CircleCheck, CircleX, Clock, Download, Landmark, RotateCcw } from "lucide-react";
 import { timingSafeEqual } from "node:crypto";
 import { hasDatabase, prisma } from "@/lib/db";
 import { getDictionary } from "@/lib/i18n";
@@ -36,11 +35,11 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   const cfg = await getSetting("donations");
 
   const meta = {
-    PENDING: { Icon: Clock, color: "text-gold-600", text: t.confirmation.pendingText },
-    CONFIRMED: { Icon: CircleCheck, color: "text-emerald-700", text: t.confirmation.confirmedText },
-    FAILED: { Icon: CircleX, color: "text-crimson-600", text: t.confirmation.failedText },
-    CANCELLED: { Icon: CircleX, color: "text-muted", text: t.confirmation.cancelledText },
-    REFUNDED: { Icon: RotateCcw, color: "text-muted", text: t.confirmation.refundedText },
+    PENDING: { color: "text-gold-600", text: t.confirmation.pendingText },
+    CONFIRMED: { color: "text-emerald-700", text: t.confirmation.confirmedText },
+    FAILED: { color: "text-crimson-600", text: t.confirmation.failedText },
+    CANCELLED: { color: "text-muted", text: t.confirmation.cancelledText },
+    REFUNDED: { color: "text-muted", text: t.confirmation.refundedText },
   }[d.status];
   const bankPending = d.method === "BANK_TRANSFER" && d.status === "PENDING";
 
@@ -56,7 +55,6 @@ export default async function ConfirmationPage({ searchParams }: Props) {
         <div className="container-site max-w-3xl">
           <div className="rounded-[2rem] bg-white p-8 shadow-poster ring-1 ring-line md:p-12">
             <div className="flex items-start gap-4">
-              <meta.Icon className={`h-8 w-8 shrink-0 ${meta.color}`} strokeWidth={1.5} aria-hidden />
               <div>
                 <p className={`text-base font-extrabold ${meta.color}`}>{t.confirmation.statuses[d.status]}</p>
                 <p className="mt-2 leading-relaxed text-ink" role="status">{bankPending ? t.confirmation.bankText : meta.text}</p>
@@ -78,7 +76,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
 
             {bankPending && (
               <div className="mt-8 border-l-2 border-gold-500 bg-ivory p-6">
-                <h2 className="flex items-center gap-2 text-lg font-semibold"><Landmark className="h-5 w-5 text-gold-600" aria-hidden /> {t.confirmation.bankTitle}</h2>
+                <h2 className="flex items-center gap-2 text-lg font-semibold"> {t.confirmation.bankTitle}</h2>
                 <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-[10rem_1fr]">
                   <dt className="text-muted">Banque</dt><dd className="font-medium">{cfg.bankName}</dd>
                   <dt className="text-muted">Titulaire</dt><dd className="font-medium">{cfg.bankAccountName}</dd>
@@ -92,8 +90,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
 
             <div className="mt-10 flex flex-wrap gap-3">
               {d.status === "CONFIRMED" && d.receiptNumber && (
-                <a href={`/api/donations/receipt?ref=${encodeURIComponent(d.reference)}&token=${encodeURIComponent(token)}`} className="btn btn-primary">
-                  <Download className="h-4 w-4" aria-hidden /> {t.confirmation.downloadReceipt}
+                <a href={`/api/donations/receipt?ref=${encodeURIComponent(d.reference)}&token=${encodeURIComponent(token)}`} className="btn btn-primary"> {t.confirmation.downloadReceipt}
                 </a>
               )}
               {d.status === "PENDING" && !bankPending && <AutoRefresh label={t.confirmation.refresh} />}

@@ -40,12 +40,3 @@ export function PageHeader({ kicker, title, intro, children }: { kicker?: string
     </header>
   );
 }
-
-export function Placeholder({ show, text }: { show: boolean; text: string }) {
-  if (!show) return null;
-  return <span className="placeholder-tag">{text}</span>;
-}
-
-export function isPlaceholder(s: string) {
-  return s.includes("[À COMPLÉTER]");
-}

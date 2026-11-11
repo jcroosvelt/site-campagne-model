@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Download, FileSpreadsheet, Settings } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { can } from "@/lib/permissions";
@@ -38,9 +37,9 @@ export default async function DonationsAdmin({ searchParams }: { searchParams: P
         description="Les montants affichés comme « confirmés » proviennent exclusivement de paiements vérifiés par le prestataire ou par rapprochement bancaire."
         actions={
           <>
-            <a href="/api/admin/donations/report" className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium"><FileSpreadsheet className="h-4 w-4" /> Rapport mensuel</a>
-            {can(user.role, "donations.export") && <a href={`/api/admin/donations/export?${qs}`} className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium"><Download className="h-4 w-4" /> Export CSV</a>}
-            {can(user.role, "donations.settings") && <Link href="/admin/dons/parametres" className="inline-flex items-center gap-2 rounded-md bg-navy-900 px-3 py-2 text-sm font-semibold text-white"><Settings className="h-4 w-4" /> Paramètres</Link>}
+            <a href="/api/admin/donations/report" className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium"> Rapport mensuel</a>
+            {can(user.role, "donations.export") && <a href={`/api/admin/donations/export?${qs}`} className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium"> Export CSV</a>}
+            {can(user.role, "donations.settings") && <Link href="/admin/dons/parametres" className="inline-flex items-center gap-2 rounded-md bg-navy-900 px-3 py-2 text-sm font-semibold text-white"> Paramètres</Link>}
           </>
         }
       />

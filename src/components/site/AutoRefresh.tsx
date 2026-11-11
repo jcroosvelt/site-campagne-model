@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { RefreshCw } from "lucide-react";
 
 /** Rafraîchit la page de suivi tant que le paiement est en attente de confirmation par le prestataire. */
 export function AutoRefresh({ label, intervalMs = 6000 }: { label: string; intervalMs?: number }) {
@@ -16,8 +15,7 @@ export function AutoRefresh({ label, intervalMs = 6000 }: { label: string; inter
     return () => clearInterval(id);
   }, [router, intervalMs]);
   return (
-    <button type="button" onClick={() => router.refresh()} className="btn btn-outline">
-      <RefreshCw className="h-4 w-4" aria-hidden /> {label}
+    <button type="button" onClick={() => router.refresh()} className="btn btn-outline"> {label}
     </button>
   );
 }
