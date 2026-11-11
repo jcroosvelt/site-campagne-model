@@ -57,7 +57,7 @@ async function ContactList() {
               <p className="font-semibold">{m.subject} <Badge tone={m.status}>{STATUS[m.status]}</Badge></p>
               <p className="text-sm text-slate-500"><a className="underline" href={`mailto:${m.email}`}>{m.name} &lt;{m.email}&gt;</a>{m.phone ? ` · ${m.phone}` : ""} · {formatDate(m.createdAt, "fr", { dateStyle: "medium", timeStyle: "short" })}</p>
             </div>
-            <div className="flex items-center gap-2"><StatusSelect kind="contact" id={m.id} status={m.status} /><DeleteButton kind="contact" id={m.id} label="" /></div>
+            <div className="flex items-center gap-2"><StatusSelect kind="contact" id={m.id} status={m.status} /><DeleteButton kind="contact" id={m.id} /></div>
           </div>
           <p className="mt-3 whitespace-pre-line text-sm text-slate-700">{m.message}</p>
         </article>
@@ -77,7 +77,7 @@ async function VolunteerList() {
           <td className={td}>{v.city}</td>
           <td className={td}><p className="text-xs">{v.interests.join(", ") || "—"}</p>{v.availability && <p className="text-xs text-slate-500">{v.availability}</p>}{v.message && <p className="mt-1 max-w-xs text-xs text-slate-600">{v.message}</p>}</td>
           <td className={td}><StatusSelect kind="volunteer" id={v.id} status={v.status} /></td>
-          <td className={td}><DeleteButton kind="volunteer" id={v.id} label="" /></td>
+          <td className={td}><DeleteButton kind="volunteer" id={v.id} /></td>
         </tr>
       ))}
     </Table>
@@ -97,7 +97,7 @@ async function SubscriberList() {
           <td className={td}>{s.locale.toUpperCase()}</td>
           <td className={td}><Badge tone={s.status === "CONFIRMED" ? "CONFIRMED" : s.status === "PENDING" ? "PENDING" : "CANCELLED"}>{label[s.status]}</Badge></td>
           <td className={td}>{formatDate(s.createdAt, "fr", { dateStyle: "short" })}</td>
-          <td className={td}><DeleteButton kind="subscriber" id={s.id} label="" /></td>
+          <td className={td}><DeleteButton kind="subscriber" id={s.id} /></td>
         </tr>
       ))}
     </Table>
